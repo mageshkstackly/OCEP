@@ -1,563 +1,7 @@
-// import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:provider/provider.dart';
-// import 'package:go_router/go_router.dart';
-
-// import '../../app_theme.dart';
-// import '../../providers/user_provider.dart';
-// import '../../routes/routes.dart';
-// import '../../widgets/auth_layout.dart';
-
-// class RegisterPage extends StatefulWidget {
-//   const RegisterPage({super.key});
-
-//   @override
-//   State<RegisterPage> createState() => _RegisterPageState();
-// }
-
-// class _RegisterPageState extends State<RegisterPage> {
-//   final _formKey = GlobalKey<FormState>();
-
-//   final TextEditingController _nameController = TextEditingController();
-//   final TextEditingController _emailController = TextEditingController();
-//   final TextEditingController _passwordController = TextEditingController();
-//   final TextEditingController _confirmPasswordController =
-//       TextEditingController();
-
-//   bool _obscurePassword = true;
-//   bool _obscureConfirmPassword = true;
-//   bool _isLoading = false;
-
-//   @override
-//   void dispose() {
-//     _nameController.dispose();
-//     _emailController.dispose();
-//     _passwordController.dispose();
-//     _confirmPasswordController.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return AuthLayout(reverse: true, child: _buildRegisterCard());
-//   }
-
-//   // ============================================================
-//   // REGISTER CARD
-//   // ============================================================
-
-//   Widget _buildRegisterCard() {
-//     return LayoutBuilder(
-//       builder: (context, constraints) {
-//         final width = constraints.maxWidth;
-//         final isMobile = width < 500;
-
-//         return Container(
-//           width: double.infinity,
-//           constraints: const BoxConstraints(maxWidth: 450),
-//           padding: EdgeInsets.symmetric(
-//             horizontal: isMobile ? 16 : 30,
-//             vertical: isMobile ? 10 : 30,
-//           ),
-//           decoration: BoxDecoration(
-//             color: Colors.white,
-//             borderRadius: BorderRadius.circular(isMobile ? 14 : 20),
-//             border: Border.all(
-//               color: AppTheme.darkNavy.withValues(alpha: 0.08),
-//             ),
-//             boxShadow: [
-//               BoxShadow(
-//                 color: AppTheme.darkNavy.withValues(alpha: 0.08),
-//                 blurRadius: 25,
-//                 offset: const Offset(0, 8),
-//               ),
-//             ],
-//           ),
-//           child: _buildRegisterForm(isMobile),
-//         );
-//       },
-//     );
-//   }
-
-//   // ============================================================
-//   // REGISTER FORM
-//   // ============================================================
-
-//   Widget _buildRegisterForm(bool isMobile) {
-//     return Form(
-//       key: _formKey,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         mainAxisSize: MainAxisSize.min,
-//         children: [
-//           // ------------------------------------------------------
-//           // TITLE
-//           // ------------------------------------------------------
-
-//           Text(
-//             'Create Account',
-//             style: GoogleFonts.roboto(
-//               color: AppTheme.darkNavy,
-//               fontSize: isMobile ? 22 : 28,
-//               fontWeight: FontWeight.w800,
-//             ),
-//           ),
-
-//           SizedBox(height: isMobile ? 3 : 7),
-
-//           Text(
-//             'Create your OneCloud account to get started.',
-//             style: GoogleFonts.roboto(
-//               color: AppTheme.darkNavy.withValues(alpha: 0.55),
-//               fontSize: isMobile ? 10 : 12,
-//               height: 1.25,
-//             ),
-//           ),
-
-//           SizedBox(height: isMobile ? 10 : 25),
-
-//           // ------------------------------------------------------
-//           // FULL NAME
-//           // ------------------------------------------------------
-//           _buildLabel('Full Name', isMobile),
-
-//           SizedBox(height: isMobile ? 4 : 7),
-
-//           _buildTextField(
-//             controller: _nameController,
-//             hintText: 'Enter your full name',
-//             icon: Icons.person_outline,
-//             textInputAction: TextInputAction.next,
-//             isMobile: isMobile,
-//             validator: (value) {
-//               if (value == null || value.trim().isEmpty) {
-//                 return 'Please enter your name';
-//               }
-
-//               if (value.trim().length < 2) {
-//                 return 'Name must contain at least 2 characters';
-//               }
-
-//               return null;
-//             },
-//           ),
-
-//           SizedBox(height: isMobile ? 8 : 17),
-
-//           // ------------------------------------------------------
-//           // EMAIL
-//           // ------------------------------------------------------
-//           _buildLabel('Email Address', isMobile),
-
-//           SizedBox(height: isMobile ? 4 : 7),
-
-//           _buildTextField(
-//             controller: _emailController,
-//             hintText: 'Enter your email address',
-//             icon: Icons.email_outlined,
-//             keyboardType: TextInputType.emailAddress,
-//             textInputAction: TextInputAction.next,
-//             isMobile: isMobile,
-//             validator: (value) {
-//               if (value == null || value.trim().isEmpty) {
-//                 return 'Please enter your email';
-//               }
-
-//               final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-
-//               if (!emailRegex.hasMatch(value.trim())) {
-//                 return 'Please enter a valid email address';
-//               }
-
-//               return null;
-//             },
-//           ),
-
-//           SizedBox(height: isMobile ? 8 : 17),
-
-//           // ------------------------------------------------------
-//           // PASSWORD
-//           // ------------------------------------------------------
-//           _buildLabel('Password', isMobile),
-
-//           SizedBox(height: isMobile ? 4 : 7),
-
-//           _buildTextField(
-//             controller: _passwordController,
-//             hintText: 'Create a password',
-//             icon: Icons.lock_outline,
-//             obscureText: _obscurePassword,
-//             textInputAction: TextInputAction.next,
-//             isMobile: isMobile,
-//             suffixIcon: IconButton(
-//               onPressed: () {
-//                 setState(() {
-//                   _obscurePassword = !_obscurePassword;
-//                 });
-//               },
-//               padding: EdgeInsets.zero,
-//               constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-//               icon: Icon(
-//                 _obscurePassword
-//                     ? Icons.visibility_outlined
-//                     : Icons.visibility_off_outlined,
-//                 color: AppTheme.darkNavy.withValues(alpha: 0.45),
-//                 size: isMobile ? 17 : 19,
-//               ),
-//             ),
-//             validator: (value) {
-//               if (value == null || value.isEmpty) {
-//                 return 'Please enter a password';
-//               }
-
-//               if (value.length < 6) {
-//                 return 'Password must contain at least 6 characters';
-//               }
-
-//               return null;
-//             },
-//           ),
-
-//           SizedBox(height: isMobile ? 8 : 17),
-
-//           // ------------------------------------------------------
-//           // CONFIRM PASSWORD
-//           // ------------------------------------------------------
-//           _buildLabel('Confirm Password', isMobile),
-
-//           SizedBox(height: isMobile ? 4 : 7),
-
-//           _buildTextField(
-//             controller: _confirmPasswordController,
-//             hintText: 'Confirm your password',
-//             icon: Icons.lock_outline,
-//             obscureText: _obscureConfirmPassword,
-//             textInputAction: TextInputAction.done,
-//             isMobile: isMobile,
-//             suffixIcon: IconButton(
-//               onPressed: () {
-//                 setState(() {
-//                   _obscureConfirmPassword = !_obscureConfirmPassword;
-//                 });
-//               },
-//               padding: EdgeInsets.zero,
-//               constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-//               icon: Icon(
-//                 _obscureConfirmPassword
-//                     ? Icons.visibility_outlined
-//                     : Icons.visibility_off_outlined,
-//                 color: AppTheme.darkNavy.withValues(alpha: 0.45),
-//                 size: isMobile ? 17 : 19,
-//               ),
-//             ),
-//             validator: (value) {
-//               if (value == null || value.isEmpty) {
-//                 return 'Please confirm your password';
-//               }
-
-//               if (value != _passwordController.text) {
-//                 return 'Passwords do not match';
-//               }
-
-//               return null;
-//             },
-//             onFieldSubmitted: (_) {
-//               _register();
-//             },
-//           ),
-
-//           SizedBox(height: isMobile ? 7 : 14),
-
-//           // ------------------------------------------------------
-//           // TERMS
-//           // ------------------------------------------------------
-//           Row(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Icon(
-//                 Icons.check_circle_outline,
-//                 color: AppTheme.primaryBlue,
-//                 size: isMobile ? 14 : 16,
-//               ),
-
-//               SizedBox(width: isMobile ? 5 : 7),
-
-//               Expanded(
-//                 child: Text(
-//                   'By creating an account, you agree to the '
-//                   'OneCloud platform terms and conditions.',
-//                   style: GoogleFonts.roboto(
-//                     color: AppTheme.darkNavy.withValues(alpha: 0.55),
-//                     fontSize: isMobile ? 8 : 9.5,
-//                     height: isMobile ? 1.2 : 1.4,
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-
-//           SizedBox(height: isMobile ? 10 : 22),
-
-//           // ------------------------------------------------------
-//           // REGISTER BUTTON
-//           // ------------------------------------------------------
-//           SizedBox(
-//             width: double.infinity,
-//             height: isMobile ? 42 : 50,
-//             child: ElevatedButton(
-//               onPressed: _isLoading ? null : _register,
-//               style: ElevatedButton.styleFrom(
-//                 backgroundColor: AppTheme.primaryBlue,
-//                 foregroundColor: Colors.white,
-//                 disabledBackgroundColor: AppTheme.primaryBlue.withValues(
-//                   alpha: 0.50,
-//                 ),
-//                 elevation: 0,
-//                 padding: EdgeInsets.zero,
-//                 shape: RoundedRectangleBorder(
-//                   borderRadius: BorderRadius.circular(isMobile ? 8 : 10),
-//                 ),
-//               ),
-//               child: _isLoading
-//                   ? SizedBox(
-//                       width: isMobile ? 18 : 21,
-//                       height: isMobile ? 18 : 21,
-//                       child: const CircularProgressIndicator(
-//                         strokeWidth: 2,
-//                         color: Colors.white,
-//                       ),
-//                     )
-//                   : Row(
-//                       mainAxisAlignment: MainAxisAlignment.center,
-//                       children: [
-//                         Text(
-//                           'Create Account',
-//                           style: GoogleFonts.roboto(
-//                             fontSize: isMobile ? 11 : 13,
-//                             fontWeight: FontWeight.w700,
-//                           ),
-//                         ),
-
-//                         SizedBox(width: isMobile ? 5 : 8),
-
-//                         Icon(
-//                           Icons.arrow_forward_rounded,
-//                           size: isMobile ? 15 : 18,
-//                         ),
-//                       ],
-//                     ),
-//             ),
-//           ),
-
-//           SizedBox(height: isMobile ? 8 : 20),
-
-//           // ------------------------------------------------------
-//           // LOGIN LINK
-//           // ------------------------------------------------------
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Flexible(
-//                 child: Text(
-//                   'Already have an account?',
-//                   overflow: TextOverflow.ellipsis,
-//                   style: GoogleFonts.roboto(
-//                     color: AppTheme.darkNavy.withValues(alpha: 0.55),
-//                     fontSize: isMobile ? 9 : 11,
-//                   ),
-//                 ),
-//               ),
-
-//               SizedBox(width: isMobile ? 3 : 5),
-
-//               TextButton(
-//                 onPressed: () {
-//                   context.go(AppRoutes.login);
-//                 },
-//                 style: TextButton.styleFrom(
-//                   padding: EdgeInsets.symmetric(
-//                     horizontal: isMobile ? 3 : 4,
-//                     vertical: 1,
-//                   ),
-//                   minimumSize: Size.zero,
-//                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-//                 ),
-//                 child: Text(
-//                   'Sign In',
-//                   style: GoogleFonts.roboto(
-//                     color: AppTheme.primaryBlue,
-//                     fontSize: isMobile ? 9 : 11,
-//                     fontWeight: FontWeight.w700,
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   // ============================================================
-//   // LABEL
-//   // ============================================================
-
-//   Widget _buildLabel(String text, bool isMobile) {
-//     return Text(
-//       text,
-//       style: GoogleFonts.roboto(
-//         color: AppTheme.darkNavy,
-//         fontSize: isMobile ? 9 : 11,
-//         fontWeight: FontWeight.w700,
-//       ),
-//     );
-//   }
-
-//   // ============================================================
-//   // TEXT FIELD
-//   // ============================================================
-
-//   Widget _buildTextField({
-//     required TextEditingController controller,
-//     required String hintText,
-//     required IconData icon,
-//     required bool isMobile,
-//     bool obscureText = false,
-//     TextInputType? keyboardType,
-//     TextInputAction? textInputAction,
-//     Widget? suffixIcon,
-//     String? Function(String?)? validator,
-//     void Function(String)? onFieldSubmitted,
-//   }) {
-//     return TextFormField(
-//       controller: controller,
-//       obscureText: obscureText,
-//       keyboardType: keyboardType,
-//       textInputAction: textInputAction,
-//       validator: validator,
-//       onFieldSubmitted: onFieldSubmitted,
-//       style: GoogleFonts.roboto(
-//         color: AppTheme.darkNavy,
-//         fontSize: isMobile ? 10 : 12,
-//         fontWeight: FontWeight.w500,
-//       ),
-//       decoration: InputDecoration(
-//         hintText: hintText,
-//         hintStyle: GoogleFonts.roboto(
-//           color: AppTheme.darkNavy.withValues(alpha: 0.35),
-//           fontSize: isMobile ? 9 : 11,
-//         ),
-
-//         prefixIcon: Icon(
-//           icon,
-//           color: AppTheme.darkNavy.withValues(alpha: 0.45),
-//           size: isMobile ? 16 : 19,
-//         ),
-
-//         prefixIconConstraints: BoxConstraints(
-//           minWidth: isMobile ? 38 : 48,
-//           minHeight: isMobile ? 38 : 48,
-//         ),
-
-//         suffixIcon: suffixIcon,
-
-//         filled: true,
-//         fillColor: Colors.white,
-
-//         contentPadding: EdgeInsets.symmetric(
-//           horizontal: isMobile ? 10 : 14,
-//           vertical: isMobile ? 9 : 14,
-//         ),
-
-//         border: OutlineInputBorder(
-//           borderRadius: BorderRadius.circular(isMobile ? 8 : 10),
-//           borderSide: BorderSide(
-//             color: AppTheme.darkNavy.withValues(alpha: 0.08),
-//           ),
-//         ),
-
-//         enabledBorder: OutlineInputBorder(
-//           borderRadius: BorderRadius.circular(isMobile ? 8 : 10),
-//           borderSide: BorderSide(
-//             color: AppTheme.darkNavy.withValues(alpha: 0.08),
-//           ),
-//         ),
-
-//         focusedBorder: OutlineInputBorder(
-//           borderRadius: BorderRadius.circular(isMobile ? 8 : 10),
-//           borderSide: const BorderSide(color: AppTheme.primaryBlue, width: 1.5),
-//         ),
-
-//         errorBorder: OutlineInputBorder(
-//           borderRadius: BorderRadius.circular(isMobile ? 8 : 10),
-//           borderSide: BorderSide(color: Colors.red.withValues(alpha: 0.60)),
-//         ),
-
-//         focusedErrorBorder: OutlineInputBorder(
-//           borderRadius: BorderRadius.circular(isMobile ? 8 : 10),
-//           borderSide: BorderSide(
-//             color: Colors.red.withValues(alpha: 0.70),
-//             width: 1.5,
-//           ),
-//         ),
-
-//         errorStyle: GoogleFonts.roboto(
-//           fontSize: isMobile ? 7.5 : 9,
-//           fontWeight: FontWeight.w500,
-//           height: 1.0,
-//         ),
-//       ),
-//     );
-//   }
-
-//   // ============================================================
-//   // REGISTER
-//   // ============================================================
-
-//   void _register() {
-//     FocusScope.of(context).unfocus();
-
-//     if (!_formKey.currentState!.validate()) {
-//       return;
-//     }
-
-//     setState(() {
-//       _isLoading = true;
-//     });
-
-//     final userProvider = Provider.of<UserProvider>(context, listen: false);
-
-//     userProvider.register(
-//       _nameController.text.trim(),
-//       _emailController.text.trim(),
-//       _passwordController.text,
-//     );
-
-//     if (!mounted) return;
-
-//     setState(() {
-//       _isLoading = false;
-//     });
-
-//     ScaffoldMessenger.of(context).showSnackBar(
-//       SnackBar(
-//         content: Text(
-//           'Account created successfully',
-//           style: GoogleFonts.roboto(color: Colors.white, fontSize: 12),
-//         ),
-//         backgroundColor: AppTheme.primaryBlue,
-//         behavior: SnackBarBehavior.floating,
-//       ),
-//     );
-
-//     context.go(AppRoutes.login);
-//   }
-// }
-
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../app_theme.dart';
 import '../../providers/user_provider.dart';
@@ -573,539 +17,169 @@ class RegisterPage extends ConsumerStatefulWidget {
 
 class _RegisterPageState extends ConsumerState<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
-
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController =
-      TextEditingController();
-
-  bool _obscurePassword = true;
-  bool _obscureConfirmPassword = true;
-  bool _isLoading = false;
+  final _orgName = TextEditingController();
+  final _orgCode = TextEditingController();
+  final _city = TextEditingController();
+  final _name = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+  final _confirmPassword = TextEditingController();
+  bool _accountStep = false;
+  bool _loading = false;
+  bool _orgCodeEdited = false;
+  String _orgType = 'Enterprise';
+  String _industry = 'Information Technology';
+  String _companySize = '501–1000';
+  String _country = 'India';
+  String _state = 'Telangana';
+  String _timeZone = 'Asia/Kolkata (UTC+05:30)';
 
   @override
   void dispose() {
-    _nameController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
+    _orgName.dispose();
+    _orgCode.dispose();
+    _city.dispose();
+    _name.dispose();
+    _email.dispose();
+    _password.dispose();
+    _confirmPassword.dispose();
     super.dispose();
   }
 
   @override
-  Widget build(BuildContext context) {
-    return AuthLayout(reverse: true, child: _buildRegisterCard());
-  }
-
-  // ============================================================
-  // REGISTER CARD
-  // ============================================================
-
-  Widget _buildRegisterCard() {
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final width = constraints.maxWidth;
-        final isMobile = width < 500;
-
-        return Container(
-          width: double.infinity,
-          constraints: const BoxConstraints(maxWidth: 450),
-          padding: EdgeInsets.symmetric(
-            horizontal: isMobile ? 16 : 30,
-            vertical: isMobile ? 10 : 30,
-          ),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(isMobile ? 14 : 20),
-            border: Border.all(
-              color: AppTheme.darkNavy.withValues(alpha: 0.08),
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: AppTheme.darkNavy.withValues(alpha: 0.08),
-                blurRadius: 25,
-                offset: const Offset(0, 8),
-              ),
-            ],
-          ),
-          child: _buildRegisterForm(isMobile),
-        );
-      },
-    );
-  }
-
-  // ============================================================
-  // REGISTER FORM
-  // ============================================================
-
-  Widget _buildRegisterForm(bool isMobile) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // ------------------------------------------------------
-          // TITLE
-          // ------------------------------------------------------
-
-          Text(
-            'Create Account',
-            style: GoogleFonts.roboto(
-              color: AppTheme.darkNavy,
-              fontSize: isMobile ? 22 : 28,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-
-          SizedBox(height: isMobile ? 3 : 7),
-
-          Text(
-            'Create your OneCloud account to get started.',
-            style: GoogleFonts.roboto(
-              color: AppTheme.darkNavy.withValues(alpha: 0.55),
-              fontSize: isMobile ? 10 : 12,
-              height: 1.25,
-            ),
-          ),
-
-          SizedBox(height: isMobile ? 10 : 25),
-
-          // ------------------------------------------------------
-          // FULL NAME
-          // ------------------------------------------------------
-          _buildLabel('Full Name', isMobile),
-
-          SizedBox(height: isMobile ? 4 : 7),
-
-          _buildTextField(
-            controller: _nameController,
-            hintText: 'Enter your full name',
-            icon: Icons.person_outline,
-            textInputAction: TextInputAction.next,
-            isMobile: isMobile,
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return 'Please enter your name';
-              }
-
-              if (value.trim().length < 2) {
-                return 'Name must contain at least 2 characters';
-              }
-
-              return null;
-            },
-          ),
-
-          SizedBox(height: isMobile ? 8 : 17),
-
-          // ------------------------------------------------------
-          // EMAIL
-          // ------------------------------------------------------
-          _buildLabel('Email Address', isMobile),
-
-          SizedBox(height: isMobile ? 4 : 7),
-
-          _buildTextField(
-            controller: _emailController,
-            hintText: 'Enter your email address',
-            icon: Icons.email_outlined,
-            keyboardType: TextInputType.emailAddress,
-            textInputAction: TextInputAction.next,
-            isMobile: isMobile,
-            validator: (value) {
-              if (value == null || value.trim().isEmpty) {
-                return 'Please enter your email';
-              }
-
-              final emailRegex = RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$');
-
-              if (!emailRegex.hasMatch(value.trim())) {
-                return 'Please enter a valid email address';
-              }
-
-              return null;
-            },
-          ),
-
-          SizedBox(height: isMobile ? 8 : 17),
-
-          // ------------------------------------------------------
-          // PASSWORD
-          // ------------------------------------------------------
-          _buildLabel('Password', isMobile),
-
-          SizedBox(height: isMobile ? 4 : 7),
-
-          _buildTextField(
-            controller: _passwordController,
-            hintText: 'Create a password',
-            icon: Icons.lock_outline,
-            obscureText: _obscurePassword,
-            textInputAction: TextInputAction.next,
-            isMobile: isMobile,
-            suffixIcon: IconButton(
-              onPressed: () {
-                setState(() {
-                  _obscurePassword = !_obscurePassword;
-                });
-              },
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-              icon: Icon(
-                _obscurePassword
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
-                color: AppTheme.darkNavy.withValues(alpha: 0.45),
-                size: isMobile ? 17 : 19,
-              ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please enter a password';
-              }
-
-              if (value.length < 6) {
-                return 'Password must contain at least 6 characters';
-              }
-
-              return null;
-            },
-          ),
-
-          SizedBox(height: isMobile ? 8 : 17),
-
-          // ------------------------------------------------------
-          // CONFIRM PASSWORD
-          // ------------------------------------------------------
-          _buildLabel('Confirm Password', isMobile),
-
-          SizedBox(height: isMobile ? 4 : 7),
-
-          _buildTextField(
-            controller: _confirmPasswordController,
-            hintText: 'Confirm your password',
-            icon: Icons.lock_outline,
-            obscureText: _obscureConfirmPassword,
-            textInputAction: TextInputAction.done,
-            isMobile: isMobile,
-            suffixIcon: IconButton(
-              onPressed: () {
-                setState(() {
-                  _obscureConfirmPassword = !_obscureConfirmPassword;
-                });
-              },
-              padding: EdgeInsets.zero,
-              constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-              icon: Icon(
-                _obscureConfirmPassword
-                    ? Icons.visibility_outlined
-                    : Icons.visibility_off_outlined,
-                color: AppTheme.darkNavy.withValues(alpha: 0.45),
-                size: isMobile ? 17 : 19,
-              ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return 'Please confirm your password';
-              }
-
-              if (value != _passwordController.text) {
-                return 'Passwords do not match';
-              }
-
-              return null;
-            },
-            onFieldSubmitted: (_) {
-              _register();
-            },
-          ),
-
-          SizedBox(height: isMobile ? 7 : 14),
-
-          // ------------------------------------------------------
-          // TERMS
-          // ------------------------------------------------------
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(
-                Icons.check_circle_outline,
-                color: AppTheme.primaryBlue,
-                size: isMobile ? 14 : 16,
-              ),
-
-              SizedBox(width: isMobile ? 5 : 7),
-
-              Expanded(
-                child: Text(
-                  'By creating an account, you agree to the '
-                  'OneCloud platform terms and conditions.',
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.darkNavy.withValues(alpha: 0.55),
-                    fontSize: isMobile ? 8 : 9.5,
-                    height: isMobile ? 1.2 : 1.4,
-                  ),
-                ),
-              ),
-            ],
-          ),
-
-          SizedBox(height: isMobile ? 10 : 22),
-
-          // ------------------------------------------------------
-          // REGISTER BUTTON
-          // ------------------------------------------------------
-          SizedBox(
-            width: double.infinity,
-            height: isMobile ? 42 : 50,
-            child: ElevatedButton(
-              onPressed: _isLoading ? null : _register,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppTheme.primaryBlue,
-                foregroundColor: Colors.white,
-                disabledBackgroundColor: AppTheme.primaryBlue.withValues(
-                  alpha: 0.50,
-                ),
-                elevation: 0,
-                padding: EdgeInsets.zero,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(isMobile ? 8 : 10),
-                ),
-              ),
-              child: _isLoading
-                  ? SizedBox(
-                      width: isMobile ? 18 : 21,
-                      height: isMobile ? 18 : 21,
-                      child: const CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                  : Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Create Account',
-                          style: GoogleFonts.roboto(
-                            fontSize: isMobile ? 11 : 13,
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-
-                        SizedBox(width: isMobile ? 5 : 8),
-
-                        Icon(
-                          Icons.arrow_forward_rounded,
-                          size: isMobile ? 15 : 18,
-                        ),
-                      ],
-                    ),
-            ),
-          ),
-
-          SizedBox(height: isMobile ? 8 : 20),
-
-          // ------------------------------------------------------
-          // LOGIN LINK
-          // ------------------------------------------------------
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Flexible(
-                child: Text(
-                  'Already have an account?',
-                  overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.darkNavy.withValues(alpha: 0.55),
-                    fontSize: isMobile ? 9 : 11,
-                  ),
-                ),
-              ),
-
-              SizedBox(width: isMobile ? 3 : 5),
-
-              TextButton(
-                onPressed: () {
-                  context.go(AppRoutes.login);
-                },
-                style: TextButton.styleFrom(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: isMobile ? 3 : 4,
-                    vertical: 1,
-                  ),
-                  minimumSize: Size.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-                child: Text(
-                  'Sign In',
-                  style: GoogleFonts.roboto(
-                    color: AppTheme.primaryBlue,
-                    fontSize: isMobile ? 9 : 11,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  // ============================================================
-  // LABEL
-  // ============================================================
-
-  Widget _buildLabel(String text, bool isMobile) {
-    return Text(
-      text,
-      style: GoogleFonts.roboto(
-        color: AppTheme.darkNavy,
-        fontSize: isMobile ? 9 : 11,
-        fontWeight: FontWeight.w700,
-      ),
-    );
-  }
-
-  // ============================================================
-  // TEXT FIELD
-  // ============================================================
-
-  Widget _buildTextField({
-    required TextEditingController controller,
-    required String hintText,
-    required IconData icon,
-    required bool isMobile,
-    bool obscureText = false,
-    TextInputType? keyboardType,
-    TextInputAction? textInputAction,
-    Widget? suffixIcon,
-    String? Function(String?)? validator,
-    void Function(String)? onFieldSubmitted,
-  }) {
-    return TextFormField(
-      controller: controller,
-      obscureText: obscureText,
-      keyboardType: keyboardType,
-      textInputAction: textInputAction,
-      validator: validator,
-      onFieldSubmitted: onFieldSubmitted,
-      style: GoogleFonts.roboto(
-        color: AppTheme.darkNavy,
-        fontSize: isMobile ? 10 : 12,
-        fontWeight: FontWeight.w500,
-      ),
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: GoogleFonts.roboto(
-          color: AppTheme.darkNavy.withValues(alpha: 0.35),
-          fontSize: isMobile ? 9 : 11,
+  Widget build(BuildContext context) => AuthLayout(
+        child: Form(
+          key: _formKey,
+          child: _accountStep ? _accountForm() : _organizationForm(),
         ),
+      );
 
-        prefixIcon: Icon(
-          icon,
-          color: AppTheme.darkNavy.withValues(alpha: 0.45),
-          size: isMobile ? 16 : 19,
+  Widget _organizationForm() => Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+        _progress(),
+        const SizedBox(height: 13),
+        Text('STEP 2 OF 3 · ORGANIZATION DETAILS', style: _eyebrow),
+        const SizedBox(height: 6),
+        Text('Tell us about your organization', style: GoogleFonts.inter(color: AppTheme.ink, fontSize: 18, height: 1.2, fontWeight: FontWeight.w600, letterSpacing: -.3)),
+        const SizedBox(height: 4),
+        Text('This helps us set up your workspace on One Enterprise.', style: GoogleFonts.inter(color: AppTheme.muted, fontSize: 9.5)),
+        const SizedBox(height: 14),
+        _label('Organization Name *'),
+        const SizedBox(height: 4),
+        TextFormField(
+          controller: _orgName,
+          style: _inputText,
+          decoration: _decoration('ABC Technologies Pvt Ltd'),
+          validator: (value) => value == null || value.trim().isEmpty ? 'Enter your organization name' : null,
+          onChanged: (value) {
+            if (!_orgCodeEdited) {
+              _orgCode.text = _slug(value);
+            }
+          },
         ),
-
-        prefixIconConstraints: BoxConstraints(
-          minWidth: isMobile ? 38 : 48,
-          minHeight: isMobile ? 38 : 48,
+        const SizedBox(height: 8),
+        _label('Organization Code *'),
+        const SizedBox(height: 4),
+        TextFormField(
+          controller: _orgCode,
+          style: _inputText,
+          decoration: _decoration('ABC-TECH'),
+          onChanged: (_) => _orgCodeEdited = true,
+          validator: (value) => value == null || value.trim().isEmpty ? 'Enter an organization code' : null,
         ),
+        const SizedBox(height: 3),
+        Text('Auto-generated from your organization name — edit as needed.', style: GoogleFonts.inter(color: AppTheme.muted, fontSize: 7.5)),
+        const SizedBox(height: 8),
+        _label('Organization Type *'),
+        const SizedBox(height: 4),
+        _dropdown(_orgType, const ['Enterprise', 'Small Business', 'Startup', 'Non-profit'], (value) => setState(() => _orgType = value!)),
+        const SizedBox(height: 8),
+        _label('Industry *'),
+        const SizedBox(height: 4),
+        _dropdown(_industry, const ['Information Technology', 'Finance', 'Healthcare', 'Manufacturing', 'Retail', 'Other'], (value) => setState(() => _industry = value!)),
+        const SizedBox(height: 8),
+        _label('Company Size *'),
+        const SizedBox(height: 4),
+        _dropdown(_companySize, const ['1–50', '51–200', '201–500', '501–1000', '1000+'], (value) => setState(() => _companySize = value!)),
+        const SizedBox(height: 8),
+        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [_label('Country *'), const SizedBox(height: 4), _dropdown(_country, const ['India', 'United States', 'United Kingdom', 'Singapore'], (value) => setState(() => _country = value!))])),
+          const SizedBox(width: 9),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [_label('State / Province *'), const SizedBox(height: 4), _dropdown(_state, const ['Telangana', 'Karnataka', 'Tamil Nadu', 'Maharashtra', 'Other'], (value) => setState(() => _state = value!))])),
+        ]),
+        const SizedBox(height: 8),
+        Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [_label('City *'), const SizedBox(height: 4), TextFormField(controller: _city, style: _inputText, decoration: _decoration('Hyderabad'), validator: (value) => value == null || value.trim().isEmpty ? 'Enter a city' : null)])),
+          const SizedBox(width: 9),
+          Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [_label('Time Zone *'), const SizedBox(height: 4), _dropdown(_timeZone, const ['Asia/Kolkata (UTC+05:30)', 'UTC', 'America/New_York', 'Europe/London'], (value) => setState(() => _timeZone = value!))])),
+        ]),
+        const SizedBox(height: 13),
+        SizedBox(width: double.infinity, height: 38, child: ElevatedButton(onPressed: _continueToAccount, child: const Text('Continue', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w500)))),
+        const SizedBox(height: 7),
+        Center(child: TextButton(onPressed: () => context.go(AppRoutes.login), style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap), child: const Text('Back to sign in', style: TextStyle(color: AppTheme.muted, fontSize: 9)))),
+      ]);
 
-        suffixIcon: suffixIcon,
+  Widget _accountForm() => Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: [
+        _progress(),
+        const SizedBox(height: 13),
+        Text('STEP 3 OF 3 · ACCOUNT DETAILS', style: _eyebrow),
+        const SizedBox(height: 6),
+        Text('Create your admin account', style: GoogleFonts.inter(color: AppTheme.ink, fontSize: 18, height: 1.2, fontWeight: FontWeight.w600, letterSpacing: -.3)),
+        const SizedBox(height: 4),
+        Text('This account will manage ${_orgName.text.trim().isEmpty ? 'your organization' : _orgName.text.trim()}.', style: GoogleFonts.inter(color: AppTheme.muted, fontSize: 9.5), maxLines: 2, overflow: TextOverflow.ellipsis),
+        const SizedBox(height: 16),
+        _label('Your Name *'),
+        const SizedBox(height: 4),
+        TextFormField(controller: _name, style: _inputText, decoration: _decoration('Renu Kapoor'), validator: (value) => value == null || value.trim().length < 2 ? 'Enter your name' : null),
+        const SizedBox(height: 11),
+        _label('Work Email *'),
+        const SizedBox(height: 4),
+        TextFormField(controller: _email, keyboardType: TextInputType.emailAddress, style: _inputText, decoration: _decoration('you@company.com'), validator: (value) => value == null || !RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(value.trim()) ? 'Enter a valid work email' : null),
+        const SizedBox(height: 11),
+        _label('Password *'),
+        const SizedBox(height: 4),
+        TextFormField(controller: _password, obscureText: true, style: _inputText, decoration: _decoration('Create a password'), validator: (value) => value == null || value.length < 6 ? 'Use at least 6 characters' : null),
+        const SizedBox(height: 11),
+        _label('Confirm Password *'),
+        const SizedBox(height: 4),
+        TextFormField(controller: _confirmPassword, obscureText: true, style: _inputText, decoration: _decoration('Confirm your password'), validator: (value) => value != _password.text ? 'Passwords do not match' : null),
+        const SizedBox(height: 15),
+        SizedBox(width: double.infinity, height: 38, child: ElevatedButton(onPressed: _loading ? null : _createAccount, child: Text(_loading ? 'Creating workspace...' : 'Create workspace', style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500)))),
+        const SizedBox(height: 7),
+        Center(child: TextButton(onPressed: () => setState(() => _accountStep = false), style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: Size.zero, tapTargetSize: MaterialTapTargetSize.shrinkWrap), child: const Text('Back to organization details', style: TextStyle(color: AppTheme.muted, fontSize: 9)))),
+      ]);
 
-        filled: true,
-        fillColor: Colors.white,
+  Widget _progress() => Row(children: List.generate(3, (index) => Expanded(child: Container(height: 2, margin: EdgeInsets.only(right: index < 2 ? 4 : 0), color: index < (_accountStep ? 3 : 2) ? AppTheme.darkNavy : const Color(0xFFE5E8EE)))));
 
-        contentPadding: EdgeInsets.symmetric(
-          horizontal: isMobile ? 10 : 14,
-          vertical: isMobile ? 9 : 14,
-        ),
+  static const _eyebrow = TextStyle(fontSize: 8, color: AppTheme.muted, letterSpacing: .9, fontFamily: 'monospace');
+  static const _inputText = TextStyle(fontSize: 10.5, color: AppTheme.ink);
 
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(isMobile ? 8 : 10),
-          borderSide: BorderSide(
-            color: AppTheme.darkNavy.withValues(alpha: 0.08),
-          ),
-        ),
+  Widget _label(String value) => Text(value, style: const TextStyle(color: AppTheme.ink, fontSize: 8.5, fontWeight: FontWeight.w600));
 
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(isMobile ? 8 : 10),
-          borderSide: BorderSide(
-            color: AppTheme.darkNavy.withValues(alpha: 0.08),
-          ),
-        ),
+  InputDecoration _decoration(String hint) => InputDecoration(hintText: hint, hintStyle: const TextStyle(color: Color(0xFFA0A9B6), fontSize: 9.5), isDense: true, contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10));
 
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(isMobile ? 8 : 10),
-          borderSide: const BorderSide(color: AppTheme.primaryBlue, width: 1.5),
-        ),
+  Widget _dropdown(String value, List<String> choices, ValueChanged<String?> onChanged) => DropdownButtonFormField<String>(
+        value: value,
+        isExpanded: true,
+        icon: const Icon(Icons.keyboard_arrow_down, size: 15),
+        style: _inputText,
+        decoration: _decoration('Select'),
+        items: choices.map((choice) => DropdownMenuItem(value: choice, child: Text(choice, maxLines: 1, overflow: TextOverflow.ellipsis, style: _inputText))).toList(),
+        onChanged: onChanged,
+      );
 
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(isMobile ? 8 : 10),
-          borderSide: BorderSide(color: Colors.red.withValues(alpha: 0.60)),
-        ),
+  String _slug(String value) => value.trim().toUpperCase().replaceAll(RegExp(r'[^A-Z0-9]+'), '-').replaceAll(RegExp(r'^-+|-+$'), '');
 
-        focusedErrorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(isMobile ? 8 : 10),
-          borderSide: BorderSide(
-            color: Colors.red.withValues(alpha: 0.70),
-            width: 1.5,
-          ),
-        ),
-
-        errorStyle: GoogleFonts.roboto(
-          fontSize: isMobile ? 7.5 : 9,
-          fontWeight: FontWeight.w500,
-          height: 1.0,
-        ),
-      ),
-    );
-  }
-
-  // ============================================================
-  // REGISTER
-  // ============================================================
-
-  void _register() {
+  void _continueToAccount() {
     FocusScope.of(context).unfocus();
+    if (_formKey.currentState?.validate() ?? false) setState(() => _accountStep = true);
+  }
 
-    if (!_formKey.currentState!.validate()) {
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    ref
-        .read(userProvider.notifier)
-        .register(
-          _nameController.text.trim(),
-          _emailController.text.trim(),
-          _passwordController.text,
-        );
-
-    if (!mounted) return;
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Account created successfully',
-          style: GoogleFonts.roboto(color: Colors.white, fontSize: 12),
-        ),
-        backgroundColor: AppTheme.primaryBlue,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
-
+  void _createAccount() {
+    FocusScope.of(context).unfocus();
+    if (!(_formKey.currentState?.validate() ?? false)) return;
+    setState(() => _loading = true);
+    ref.read(userProvider.notifier).register(_name.text.trim(), _email.text.trim(), _password.text);
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Workspace account created. You can now sign in.')));
     context.go(AppRoutes.login);
   }
 }

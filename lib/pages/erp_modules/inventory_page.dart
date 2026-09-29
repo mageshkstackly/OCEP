@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
-import '../../widgets/app_layout.dart';
 
 class InventoryPage extends StatefulWidget {
   const InventoryPage({super.key});
@@ -149,9 +148,6 @@ class _InventoryPageState extends State<InventoryPage> {
             bottom: false,
             child: Column(
               children: [
-                // ==================================================
-                // FIXED INVENTORY HEADER
-                // ==================================================
 
                 Padding(
                   padding: EdgeInsets.fromLTRB(
@@ -163,9 +159,6 @@ class _InventoryPageState extends State<InventoryPage> {
                   child: _buildPageHeader(isMobile),
                 ),
 
-                // ==================================================
-                // SCROLLABLE CONTENT
-                // ==================================================
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.fromLTRB(
@@ -198,9 +191,6 @@ class _InventoryPageState extends State<InventoryPage> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // HEADER
-  // ---------------------------------------------------------------------------
 
   Widget _buildPageHeader(bool isMobile) {
     if (isMobile) {
@@ -245,13 +235,13 @@ class _InventoryPageState extends State<InventoryPage> {
             gradient: LinearGradient(
               colors: [
                 AppTheme.primaryBlue,
-                AppTheme.primaryBlue.withOpacity(.78),
+                AppTheme.primaryBlue.withValues(alpha: .78),
               ],
             ),
             borderRadius: BorderRadius.circular(14),
             boxShadow: [
               BoxShadow(
-                color: AppTheme.primaryBlue.withOpacity(.18),
+                color: AppTheme.primaryBlue.withValues(alpha: .18),
                 blurRadius: 12,
                 offset: const Offset(0, 5),
               ),
@@ -288,9 +278,6 @@ class _InventoryPageState extends State<InventoryPage> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // SUMMARY CARDS
-  // ---------------------------------------------------------------------------
 
   Widget _buildSummaryCards(bool mobile) {
     final cards = [
@@ -395,9 +382,6 @@ class _InventoryPageState extends State<InventoryPage> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // INVENTORY HEALTH
-  // ---------------------------------------------------------------------------
 
   Widget _buildInventoryHealth(bool mobile) {
     return Container(
@@ -554,9 +538,6 @@ class _InventoryPageState extends State<InventoryPage> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // INVENTORY TABLE
-  // ---------------------------------------------------------------------------
 
   Widget _buildInventoryTable(bool mobile) {
     return Container(
@@ -701,7 +682,7 @@ class _InventoryPageState extends State<InventoryPage> {
     required ValueChanged<String?> onChanged,
   }) {
     return DropdownButtonFormField<String>(
-      value: value,
+      initialValue: value,
       isExpanded: true,
       decoration: InputDecoration(
         filled: true,
@@ -732,9 +713,6 @@ class _InventoryPageState extends State<InventoryPage> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // DESKTOP TABLE
-  // ---------------------------------------------------------------------------
 
   Widget _buildDesktopTable() {
     final items = _filteredItems();
@@ -924,9 +902,6 @@ class _InventoryPageState extends State<InventoryPage> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // MOBILE LIST
-  // ---------------------------------------------------------------------------
 
   Widget _buildMobileInventoryList() {
     final items = _filteredItems();
@@ -1071,9 +1046,6 @@ class _InventoryPageState extends State<InventoryPage> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // STATUS
-  // ---------------------------------------------------------------------------
 
   Widget _statusBadge(String status) {
     Color background;
@@ -1123,9 +1095,6 @@ class _InventoryPageState extends State<InventoryPage> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // PAGINATION
-  // ---------------------------------------------------------------------------
 
   Widget _buildPagination() {
     return Row(
@@ -1169,9 +1138,6 @@ class _InventoryPageState extends State<InventoryPage> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // FILTERING
-  // ---------------------------------------------------------------------------
 
   List<Map<String, dynamic>> _filteredItems() {
     final query = _searchController.text.trim().toLowerCase();
@@ -1194,9 +1160,6 @@ class _InventoryPageState extends State<InventoryPage> {
     }).toList();
   }
 
-  // ---------------------------------------------------------------------------
-  // DIALOGS
-  // ---------------------------------------------------------------------------
 
   void _showAddItemDialog() {
     final nameController = TextEditingController();
@@ -1343,9 +1306,6 @@ class _InventoryPageState extends State<InventoryPage> {
     );
   }
 
-  // ---------------------------------------------------------------------------
-  // HELPERS
-  // ---------------------------------------------------------------------------
 
   ButtonStyle _primaryButtonStyle() {
     return ElevatedButton.styleFrom(
@@ -1364,7 +1324,7 @@ class _InventoryPageState extends State<InventoryPage> {
       border: Border.all(color: const Color(0xFFE6EAF0)),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(.025),
+          color: Colors.black.withValues(alpha: .025),
           blurRadius: 8,
           offset: const Offset(0, 3),
         ),

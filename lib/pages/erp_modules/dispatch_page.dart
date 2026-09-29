@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
-import '../../widgets/app_layout.dart';
 
 class DispatchPage extends StatefulWidget {
   const DispatchPage({super.key});
@@ -103,7 +102,6 @@ class _DispatchPageState extends State<DispatchPage> {
             bottom: false,
             child: Column(
               children: [
-                // FIXED HEADER
                 Padding(
                   padding: EdgeInsets.fromLTRB(
                     horizontalPadding,
@@ -114,7 +112,6 @@ class _DispatchPageState extends State<DispatchPage> {
                   child: _pageHeader(mobile),
                 ),
 
-                // SCROLLABLE CONTENT
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.fromLTRB(
@@ -141,9 +138,6 @@ class _DispatchPageState extends State<DispatchPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // PAGE HEADER
-  // ------------------------------------------------------------
 
   Widget _pageHeader(bool mobile) {
     if (mobile) {
@@ -210,9 +204,6 @@ class _DispatchPageState extends State<DispatchPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // SUMMARY CARDS
-  // ------------------------------------------------------------
 
   Widget _summaryCards(bool mobile) {
     final cards = [
@@ -243,7 +234,7 @@ class _DispatchPageState extends State<DispatchPage> {
             height: 42,
             width: 42,
             decoration: BoxDecoration(
-              color: AppTheme.lightBlue.withOpacity(0.35),
+              color: AppTheme.lightBlue.withValues(alpha: 0.35),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: AppTheme.primaryBlue, size: 22),
@@ -275,9 +266,6 @@ class _DispatchPageState extends State<DispatchPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // DISPATCH QUEUE
-  // ------------------------------------------------------------
 
   Widget _dispatchQueue(bool mobile) {
     final filteredDispatches = dispatches.where((dispatch) {
@@ -336,9 +324,6 @@ class _DispatchPageState extends State<DispatchPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // FILTERS
-  // ------------------------------------------------------------
 
   Widget _filters(bool mobile) {
     if (mobile) {
@@ -390,7 +375,7 @@ class _DispatchPageState extends State<DispatchPage> {
 
   Widget _statusDropdown() {
     return DropdownButtonFormField<String>(
-      value: selectedStatus,
+      initialValue: selectedStatus,
       decoration: InputDecoration(
         filled: true,
         fillColor: const Color(0xFFF8FAFC),
@@ -424,16 +409,13 @@ class _DispatchPageState extends State<DispatchPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // DESKTOP TABLE
-  // ------------------------------------------------------------
 
   Widget _desktopTable(List<Map<String, dynamic>> dispatchList) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
         columnSpacing: 25,
-        headingRowColor: MaterialStateProperty.all(const Color(0xFFF8FAFC)),
+        headingRowColor: WidgetStateProperty.all(const Color(0xFFF8FAFC)),
         columns: const [
           DataColumn(label: Text('Dispatch ID')),
           DataColumn(label: Text('Sales Order')),
@@ -481,9 +463,6 @@ class _DispatchPageState extends State<DispatchPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // MOBILE DISPATCH LIST
-  // ------------------------------------------------------------
 
   Widget _mobileDispatches(List<Map<String, dynamic>> dispatchList) {
     return Column(
@@ -577,9 +556,6 @@ class _DispatchPageState extends State<DispatchPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // STATUS BADGE
-  // ------------------------------------------------------------
 
   Widget _statusBadge(String status) {
     Color background;
@@ -628,9 +604,6 @@ class _DispatchPageState extends State<DispatchPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // DISPATCH DETAILS
-  // ------------------------------------------------------------
 
   void _showDispatchDetails(Map<String, dynamic> dispatch) {
     showDialog(
@@ -700,9 +673,6 @@ class _DispatchPageState extends State<DispatchPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // NEW DISPATCH
-  // ------------------------------------------------------------
 
   void _showNewDispatchDialog() {
     showDialog(
@@ -770,9 +740,6 @@ class _DispatchPageState extends State<DispatchPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // EMPTY STATE
-  // ------------------------------------------------------------
 
   Widget _emptyState() {
     return Padding(
@@ -802,9 +769,6 @@ class _DispatchPageState extends State<DispatchPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // HELPERS
-  // ------------------------------------------------------------
 
   BoxDecoration _decoration() {
     return BoxDecoration(

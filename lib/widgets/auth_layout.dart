@@ -1,173 +1,529 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'dart:math' as math;
 
-import '../app_theme.dart';
+import 'package:flutter/material.dart';
+
 import 'stackly_logo.dart';
 
-class AuthLayout extends StatelessWidget {
+class AuthLayout extends StatefulWidget {
   final Widget child;
   final bool reverse;
 
   const AuthLayout({super.key, required this.child, this.reverse = false});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: LayoutBuilder(
-          builder: (context, bounds) {
-            if (bounds.maxWidth < 760) {
-              return Column(
-                children: [
-                  Container(
-                    width: double.infinity,
-                    color: AppTheme.darkNavy,
-                    padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 16),
-                    child: FittedBox(fit: BoxFit.scaleDown, alignment: Alignment.centerLeft, child: _brand()),
+  State<AuthLayout> createState() => _AuthLayoutState();
+}
+
+class _AuthLayoutState extends State<AuthLayout> {
+  bool _darkMode = false;
+  String _language = 'EN';
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: _darkMode ? const Color(0xFF0D1029) : Colors.white,
+        body: SafeArea(
+          child: LayoutBuilder(builder: (context, box) {
+            if (box.maxWidth < 760) {
+              return Column(children: [
+                const Expanded(flex: 41, child: _BrandPanel()),
+                Expanded(
+                  flex: 59,
+                  child: ColoredBox(
+                    color: _darkMode ? const Color(0xFF0D1029) : Colors.white,
+                    child: Stack(children: [
+                      SingleChildScrollView(
+                        padding: EdgeInsets.fromLTRB(
+                          10,
+                          10,
+                          10,
+                          18 + MediaQuery.viewInsetsOf(context).bottom,
+                        ),
+                        child: Center(
+                          child: ConstrainedBox(
+                            constraints: const BoxConstraints(maxWidth: 430),
+                            child: _form(),
+                          ),
+                        ),
+                      ),
+                      Positioned(top: 0, right: 5, child: _controls()),
+                    ]),
                   ),
-                  Expanded(
+                ),
+              ]);
+            }
+
+            final left = const Expanded(flex: 51, child: _BrandPanel());
+            final right = Expanded(
+              flex: 49,
+              child: ColoredBox(
+                color: _darkMode ? const Color(0xFF0D1029) : Colors.white,
+                child: Stack(children: [
+                  Positioned(top: 10, right: 18, child: _controls()),
+                  Center(
                     child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(24, 28, 24, 30),
-                      child: Center(
-                        child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 440), child: child),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32,
+                        vertical: 42,
+                      ),
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 300),
+                        child: _form(),
                       ),
                     ),
                   ),
-                ],
-              );
-            }
-            final left = Expanded(flex: 46, child: _brandPanel());
-            final right = Expanded(
-              flex: 54,
-              child: Center(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 38),
-                  child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: 360), child: child),
-                ),
+                ]),
               ),
             );
-            return Row(children: reverse ? [right, left] : [left, right]);
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _brandPanel() => Container(
-        color: AppTheme.darkNavy,
-        padding: const EdgeInsets.fromLTRB(40, 28, 40, 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _brand(),
-            const Spacer(),
-            const Text('CLOUD PLATFORM  ·  HRMS  ·  CRM  ·  ERP  ·  FINANCE  ·  AI',
-                style: TextStyle(color: AppTheme.teal, fontSize: 9, letterSpacing: 1.1, fontFamily: 'monospace')),
-            const SizedBox(height: 14),
-            RichText(
-              text: TextSpan(
-                style: GoogleFonts.inter(color: Colors.white, height: 1.12, fontSize: 30, fontWeight: FontWeight.w600, letterSpacing: -1.1),
-                children: const [
-                  TextSpan(text: 'Every operation.\n'),
-                  TextSpan(text: 'One sign-in.', style: TextStyle(color: AppTheme.gold)),
-                ],
-              ),
-            ),
-            const SizedBox(height: 14),
-            Text('HR, sales, procurement, finance and your AI copilot — running on one identity, one policy, one audit trail.',
-                style: GoogleFonts.inter(color: Colors.white.withValues(alpha: .68), fontSize: 12, height: 1.65)),
-            const SizedBox(height: 24),
-            const Expanded(flex: 3, child: _OrbitGraphic()),
-            const Spacer(),
-            Divider(color: Colors.white.withValues(alpha: .12)),
-            const SizedBox(height: 12),
-            const Wrap(spacing: 22, runSpacing: 8, children: [
-              _FooterTag(Icons.shield_outlined, 'SOC 2 Type II'),
-              _FooterTag(Icons.lock_outline, 'ISO 27001'),
-              _FooterTag(Icons.timelapse_outlined, '99.95% uptime SLA'),
-            ]),
-          ],
+            return Row(children: widget.reverse ? [right, left] : [left, right]);
+          }),
         ),
       );
 
-  Widget _brand() => Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const StacklyLogo(iconSize: 24),
-          Container(height: 18, width: 1, margin: const EdgeInsets.symmetric(horizontal: 12), color: Colors.white.withValues(alpha: .28)),
-          Container(
-            width: 27,
-            height: 27,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(7),
-              gradient: const LinearGradient(colors: [AppTheme.gold, AppTheme.teal], begin: Alignment.topLeft, end: Alignment.bottomRight),
-            ),
-            alignment: Alignment.center,
-            child: Text('1E', style: GoogleFonts.inter(color: AppTheme.darkNavy, fontSize: 10, fontWeight: FontWeight.w800)),
+  Widget _form() => AuthVisualSettings(
+        darkMode: _darkMode,
+        language: _language,
+        child: widget.child,
+      );
+
+  Widget _controls() => Row(mainAxisSize: MainAxisSize.min, children: [
+        IconButton(
+          tooltip: _darkMode ? 'Light mode' : 'Dark mode',
+          onPressed: () => setState(() => _darkMode = !_darkMode),
+          visualDensity: VisualDensity.compact,
+          icon: Icon(
+            _darkMode ? Icons.light_mode_outlined : Icons.dark_mode_outlined,
+            size: 17,
+            color: _darkMode ? Colors.white : const Color(0xFF11162F),
           ),
-          const SizedBox(width: 7),
-          Text('One Enterprise', style: GoogleFonts.inter(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w500)),
-        ],
-      );
-}
-
-class _FooterTag extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  const _FooterTag(this.icon, this.label);
-
-  @override
-  Widget build(BuildContext context) => Row(mainAxisSize: MainAxisSize.min, children: [
-        Icon(icon, size: 11, color: Colors.white.withValues(alpha: .58)),
-        const SizedBox(width: 6),
-        Text(label, style: const TextStyle(color: Color(0xFF929AB8), fontSize: 9, fontFamily: 'monospace')),
+        ),
+        PopupMenuButton<String>(
+          tooltip: 'Language',
+          initialValue: _language,
+          onSelected: (value) => setState(() => _language = value),
+          itemBuilder: (context) => const [
+            PopupMenuItem(value: 'EN', child: Text('English')),
+            PopupMenuItem(value: 'TA', child: Text('தமிழ்')),
+          ],
+          child: Row(mainAxisSize: MainAxisSize.min, children: [
+            Icon(Icons.language,
+                size: 17,
+                color: _darkMode ? Colors.white : const Color(0xFF11162F)),
+            const SizedBox(width: 4),
+            Text(_language == 'TA' ? 'தமிழ்⌄' : 'EN⌄',
+                style: TextStyle(
+                    fontSize: 10,
+                    color: _darkMode ? Colors.white : const Color(0xFF11162F))),
+          ]),
+        ),
       ]);
 }
 
-class _OrbitGraphic extends StatelessWidget {
-  const _OrbitGraphic();
+class AuthVisualSettings extends InheritedWidget {
+  final bool darkMode;
+  final String language;
+
+  const AuthVisualSettings({
+    super.key,
+    required this.darkMode,
+    required this.language,
+    required super.child,
+  });
+
+  static AuthVisualSettings? of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<AuthVisualSettings>();
 
   @override
-  Widget build(BuildContext context) => CustomPaint(
-        painter: _OrbitPainter(),
-        child: const Center(
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Color(0xFF282C60),
-              border: Border.fromBorderSide(BorderSide(color: AppTheme.gold, width: .5)),
+  bool updateShouldNotify(AuthVisualSettings oldWidget) =>
+      darkMode != oldWidget.darkMode || language != oldWidget.language;
+}
+
+class _BrandPanel extends StatefulWidget {
+  const _BrandPanel();
+
+  @override
+  State<_BrandPanel> createState() => _BrandPanelState();
+}
+
+class _BrandPanelState extends State<_BrandPanel>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _animation = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 5200),
+  )..repeat();
+
+  @override
+  void dispose() {
+    _animation.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+        builder: (context, constraints) {
+          final compact = constraints.maxWidth < 760;
+          final pad = constraints.maxWidth * .06;
+          final tiny = constraints.maxWidth < 300;
+          return Container(
+            color: const Color(0xFF0D1028),
+            padding: EdgeInsets.fromLTRB(
+                pad, compact ? 13 : 24, pad, compact ? 9 : 18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                StacklyLogo(iconSize: compact ? 27 : 30),
+                SizedBox(height: compact ? 7 : 12),
+                Text(
+                  compact
+                      ? 'CLOUD PLATFORM  ·  HRMS  ·  CRM  ·  ERP\nFINANCE  ·  AI'
+                      : 'CLOUD PLATFORM  ·  HRMS  ·  CRM  ·  ERP  ·  FINANCE  ·  AI',
+                  maxLines: compact ? 2 : 1,
+                  overflow: TextOverflow.clip,
+                  style: TextStyle(
+                    color: const Color(0xFFB2B6C4),
+                    fontSize: compact ? (tiny ? 4.6 : 5.2) : 7,
+                    letterSpacing: compact ? .55 : 1.05,
+                    height: 1.4,
+                    fontFamily: 'monospace',
+                  ),
+                ),
+                SizedBox(height: compact ? 8 : 12),
+                _BrandHeadline(
+                    fontSize: compact ? (tiny ? 17 : 24) : 32),
+                const SizedBox(height: 2),
+                Expanded(
+                    child: _OrbitScene(
+                        compact: compact, animation: _animation)),
+                Row(
+                  children: [
+                    _footerLabel('Secure', compact),
+                    SizedBox(width: compact ? 14 : 20),
+                    _footerLabel('Scalable', compact),
+                    SizedBox(width: compact ? 14 : 20),
+                    _footerLabel('Future-Ready', compact),
+                    const Spacer(),
+                    if (!compact)
+                      const Text(
+                        'BUILT FOR\nA BRIGHTER\nTOMORROW',
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          color: Color(0xFF747B9C),
+                          fontSize: 7,
+                          height: 1.25,
+                          letterSpacing: 1,
+                          fontFamily: 'monospace',
+                        ),
+                      ),
+                  ],
+                ),
+              ],
             ),
-            child: SizedBox(width: 34, height: 34, child: Center(child: Text('AI', style: TextStyle(color: Colors.white70, fontSize: 8)))),
-          ),
+          );
+        },
+      );
+
+  Widget _footerLabel(String text, bool compact) => Text(
+        text,
+        style: TextStyle(
+          color: const Color(0xFF747B9C),
+          fontSize: compact ? 6 : 7,
+          letterSpacing: compact ? .4 : .8,
+          fontFamily: 'monospace',
         ),
       );
 }
 
+class _BrandHeadline extends StatelessWidget {
+  final double fontSize;
+
+  const _BrandHeadline({required this.fontSize});
+
+  @override
+  Widget build(BuildContext context) => Text.rich(
+        TextSpan(
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: fontSize,
+            height: 1.03,
+            fontWeight: FontWeight.w600,
+            letterSpacing: -1,
+          ),
+          children: const [
+            TextSpan(text: 'One identity.\n'),
+            TextSpan(
+                text: 'Infinite ', style: TextStyle(color: Color(0xFF1677FF))),
+            TextSpan(text: 'Potential.'),
+          ],
+        ),
+      );
+}
+
+class _OrbitScene extends StatelessWidget {
+  final bool compact;
+  final Animation<double> animation;
+
+  const _OrbitScene({required this.compact, required this.animation});
+
+  @override
+  Widget build(BuildContext context) => LayoutBuilder(
+        builder: (context, constraints) {
+          final cardWidth = (constraints.maxWidth * .29)
+              .clamp(compact ? 58.0 : 88.0, compact ? 100.0 : 108.0)
+              .toDouble();
+          final cardHeight = (constraints.maxHeight * (compact ? .32 : .23))
+              .clamp(compact ? 56.0 : 72.0, compact ? 66.0 : 82.0)
+              .toDouble();
+          return Stack(
+            clipBehavior: Clip.hardEdge,
+            children: [
+              Positioned.fill(
+                child: CustomPaint(painter: _OrbitPainter(animation)),
+              ),
+              Positioned(
+                left: constraints.maxWidth * (compact ? .04 : .14),
+                top: constraints.maxHeight * .12,
+                child: _OrbitCard(
+                  width: cardWidth,
+                  height: cardHeight,
+                  icon: Icons.people_alt_outlined,
+                  title: 'People',
+                  subtitle: 'Manage users & teams',
+                  compact: compact,
+                ),
+              ),
+              Positioned(
+                right: constraints.maxWidth * (compact ? .04 : .14),
+                top: constraints.maxHeight * .12,
+                child: _OrbitCard(
+                  width: cardWidth,
+                  height: cardHeight,
+                  icon: Icons.apps_outlined,
+                  title: 'Applications',
+                  subtitle: 'Integrate & manage',
+                  compact: compact,
+                ),
+              ),
+              Positioned(
+                left: constraints.maxWidth * (compact ? .04 : .14),
+                bottom: constraints.maxHeight * .12,
+                child: _OrbitCard(
+                  width: cardWidth,
+                  height: cardHeight,
+                  icon: Icons.shield_outlined,
+                  title: 'Security',
+                  subtitle: 'Protect every access',
+                  compact: compact,
+                ),
+              ),
+              Positioned(
+                right: constraints.maxWidth * (compact ? .04 : .14),
+                bottom: constraints.maxHeight * .12,
+                child: _OrbitCard(
+                  width: cardWidth,
+                  height: cardHeight,
+                  icon: Icons.query_stats_outlined,
+                  title: 'Analytics',
+                  subtitle: 'Turn data into insights',
+                  compact: compact,
+                ),
+              ),
+              Center(
+                child: AnimatedBuilder(
+                  animation: animation,
+                  builder: (context, child) => Transform.scale(
+                    scale: 1 + .035 * math.sin(animation.value * math.pi * 2),
+                    child: child,
+                  ),
+                  child: Container(
+                    width: compact && constraints.maxWidth < 300 ? 42 : 54,
+                    height: compact && constraints.maxWidth < 300 ? 42 : 54,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF064BE5),
+                      borderRadius: BorderRadius.circular(13),
+                      border: Border.all(color: const Color(0xFF43A4FF)),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0xFF087BFF),
+                          blurRadius: 30,
+                          spreadRadius: 4,
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      '1E',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: compact && constraints.maxWidth < 300 ? 23 : 29,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -1.6,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        },
+      );
+}
+
+class _OrbitCard extends StatelessWidget {
+  final double width;
+  final double height;
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final bool compact;
+
+  const _OrbitCard({
+    required this.width,
+    required this.height,
+    required this.icon,
+    required this.title,
+    required this.subtitle,
+    required this.compact,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: width,
+      height: height,
+      padding: EdgeInsets.all(compact ? 4 : 9),
+      decoration: BoxDecoration(
+        color: const Color(0xF2090D17),
+        borderRadius: BorderRadius.circular(9),
+        border: Border.all(color: const Color(0xFF214B91), width: .8),
+        boxShadow: const [
+          BoxShadow(color: Color(0x550079FF), blurRadius: 17, spreadRadius: 1),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: compact ? 18 : 26,
+            height: compact ? 18 : 26,
+            decoration: BoxDecoration(
+              color: const Color(0xFF071C34),
+              border: Border.all(color: const Color(0xFF0D4D91), width: .7),
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Icon(icon,
+                color: const Color(0xFF168EFF), size: compact ? 11 : 15),
+          ),
+          const Spacer(),
+          Text(title,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: compact ? 7 : 10,
+                  fontWeight: FontWeight.w600)),
+          const SizedBox(height: 2),
+          Text(subtitle,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: const Color(0xFF9BA9BF), fontSize: compact ? 5.5 : 7)),
+        ],
+      ),
+    );
+  }
+}
+
 class _OrbitPainter extends CustomPainter {
+  final Animation<double> animation;
+
+  _OrbitPainter(this.animation) : super(repaint: animation);
+
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final points = [
-      Offset(size.width * .14, size.height * .18),
-      Offset(size.width * .86, size.height * .18),
-      Offset(size.width * .14, size.height * .5),
-      Offset(size.width * .86, size.height * .5),
-      Offset(size.width * .14, size.height * .82),
-      Offset(size.width * .86, size.height * .82),
+    final pulse = (math.sin(animation.value * math.pi * 2) + 1) / 2;
+    final baseRingWidth = math.min(size.width * .80, size.height * 1.12);
+    final baseRingHeight = math.min(size.height * .92, baseRingWidth * 1.12);
+    final ringWidth = baseRingWidth * (1 + .012 * pulse);
+    final ringHeight = baseRingHeight * (1 + .012 * pulse);
+    final ring = Rect.fromCenter(
+      center: center,
+      width: ringWidth,
+      height: ringHeight,
+    );
+    final arcs = [
+      (start: math.pi * 1.17, sweep: math.pi * .66),
+      (start: math.pi * .17, sweep: math.pi * .66),
     ];
-    final solid = Paint()..color = AppTheme.teal.withValues(alpha: .62)..style = PaintingStyle.stroke..strokeWidth = .65;
-    final dotted = Paint()..color = const Color(0xFF525887)..style = PaintingStyle.stroke..strokeWidth = .65;
-    final dot = Paint()..color = const Color(0xFF343A77);
-    for (var i = 0; i < points.length; i++) {
-      final path = Path()
-        ..moveTo(center.dx, center.dy)
-        ..quadraticBezierTo((center.dx + points[i].dx) / 2, points[i].dy, points[i].dx, points[i].dy);
-      canvas.drawPath(path, i < 3 ? solid : dotted);
-      canvas.drawCircle(points[i], 3, dot);
+    final glow = Paint()
+      ..shader = RadialGradient(
+        colors: [
+          const Color(0xFF3D8BFF).withValues(alpha: .34 + .12 * pulse),
+          const Color(0xFF006CFF).withValues(alpha: .10 + .05 * pulse),
+          Colors.transparent,
+        ],
+      ).createShader(Rect.fromCircle(center: center, radius: ringWidth * .75));
+    canvas.drawRect(Offset.zero & size, glow);
+    for (final layer in [
+      (width: 17.0 + 3 * pulse, color: const Color(0xFF348BFF), blur: 20.0),
+      (width: 7.0, color: const Color(0xFF29B8FF), blur: 9.0),
+    ]) {
+      final paint = Paint()
+        ..color = layer.color.withValues(alpha: .62 + .22 * pulse)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = layer.width
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, layer.blur);
+      for (final arc in arcs) {
+        canvas.drawArc(ring, arc.start, arc.sweep, false, paint);
+      }
+    }
+    final crispArc = Paint()
+        ..color = const Color(0xFF078DFF)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2.3;
+    final innerArc = Paint()
+        ..color = const Color(0xFF23CEFF)
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.5;
+    final innerRing = ring.deflate(5);
+    for (final arc in arcs) {
+      canvas.drawArc(ring, arc.start, arc.sweep, false, crispArc);
+      canvas.drawArc(innerRing, arc.start, arc.sweep, false, innerArc);
+    }
+    final glintProgress = (animation.value * 2) % 1;
+    final glintOnLowerArc = (animation.value * 2).floor().isOdd;
+    final glintStart = glintOnLowerArc ? arcs.last.start : arcs.first.start;
+    final angle = glintStart + glintProgress * arcs.first.sweep;
+    final glint = Offset(
+      center.dx + ring.width / 2 * math.cos(angle),
+      center.dy + ring.height / 2 * math.sin(angle),
+    );
+    canvas.drawCircle(
+      glint,
+      10 + pulse * 3,
+      Paint()
+        ..color = const Color(0xFF43B8FF).withValues(alpha: .8)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 12),
+    );
+    canvas.drawCircle(
+      glint,
+      2.2,
+      Paint()..color = const Color(0xFFE9FAFF),
+    );
+    final line = Paint()
+      ..color = const Color(0xFF637894).withValues(alpha: .7)
+      ..strokeWidth = 1;
+    for (final point in [
+      Offset(size.width * .27, size.height * .25),
+      Offset(size.width * .73, size.height * .25),
+      Offset(size.width * .27, size.height * .77),
+      Offset(size.width * .73, size.height * .77),
+    ]) {
+      canvas.drawLine(center, point, line);
     }
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant _OrbitPainter oldDelegate) =>
+      oldDelegate.animation != animation;
 }

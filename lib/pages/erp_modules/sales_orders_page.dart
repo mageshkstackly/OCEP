@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
-import '../../widgets/app_layout.dart';
 
 class SalesOrdersPage extends StatefulWidget {
   const SalesOrdersPage({super.key});
@@ -120,7 +119,6 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
             bottom: false,
             child: Column(
               children: [
-                // FIXED HEADER
                 Padding(
                   padding: EdgeInsets.fromLTRB(
                     horizontalPadding,
@@ -131,7 +129,6 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
                   child: _pageHeader(mobile),
                 ),
 
-                // SCROLLABLE CONTENT
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.fromLTRB(
@@ -158,9 +155,6 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // PAGE HEADER
-  // ------------------------------------------------------------
 
   Widget _pageHeader(bool mobile) {
     if (mobile) {
@@ -227,9 +221,6 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // SUMMARY CARDS
-  // ------------------------------------------------------------
 
   Widget _summaryCards(bool mobile) {
     final cards = [
@@ -260,7 +251,7 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
             height: 42,
             width: 42,
             decoration: BoxDecoration(
-              color: AppTheme.lightBlue.withOpacity(0.35),
+              color: AppTheme.lightBlue.withValues(alpha: 0.35),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: AppTheme.primaryBlue, size: 22),
@@ -292,9 +283,6 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // ORDER MANAGEMENT
-  // ------------------------------------------------------------
 
   Widget _orderManagement(bool mobile) {
     final filteredOrders = orders.where((order) {
@@ -350,9 +338,6 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // FILTERS
-  // ------------------------------------------------------------
 
   Widget _filters(bool mobile) {
     if (mobile) {
@@ -404,7 +389,7 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
 
   Widget _statusDropdown() {
     return DropdownButtonFormField<String>(
-      value: selectedStatus,
+      initialValue: selectedStatus,
       decoration: InputDecoration(
         filled: true,
         fillColor: const Color(0xFFF8FAFC),
@@ -437,16 +422,13 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // DESKTOP TABLE
-  // ------------------------------------------------------------
 
   Widget _desktopTable(List<Map<String, dynamic>> orderList) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
         columnSpacing: 26,
-        headingRowColor: MaterialStateProperty.all(const Color(0xFFF8FAFC)),
+        headingRowColor: WidgetStateProperty.all(const Color(0xFFF8FAFC)),
         columns: const [
           DataColumn(label: Text('Order ID')),
           DataColumn(label: Text('Customer')),
@@ -502,9 +484,6 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // MOBILE ORDERS
-  // ------------------------------------------------------------
 
   Widget _mobileOrders(List<Map<String, dynamic>> orderList) {
     return Column(
@@ -592,9 +571,6 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // STATUS BADGE
-  // ------------------------------------------------------------
 
   Widget _statusBadge(String status) {
     Color background;
@@ -638,9 +614,6 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // ORDER DETAILS
-  // ------------------------------------------------------------
 
   void _showOrderDetails(Map<String, dynamic> order) {
     showDialog(
@@ -709,9 +682,6 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // CREATE ORDER
-  // ------------------------------------------------------------
 
   void _showCreateOrderDialog() {
     showDialog(
@@ -779,9 +749,6 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // EMPTY STATE
-  // ------------------------------------------------------------
 
   Widget _emptyState() {
     return Padding(
@@ -811,9 +778,6 @@ class _SalesOrdersPageState extends State<SalesOrdersPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // HELPERS
-  // ------------------------------------------------------------
 
   String _currency(double amount) {
     return '₹${amount.toStringAsFixed(2)}';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
-import '../../widgets/app_layout.dart';
 
 class ProcurementPage extends StatefulWidget {
   const ProcurementPage({super.key});
@@ -92,7 +91,6 @@ class _ProcurementPageState extends State<ProcurementPage> {
             bottom: false,
             child: Column(
               children: [
-                // FIXED HEADER
                 Padding(
                   padding: EdgeInsets.fromLTRB(
                     horizontalPadding,
@@ -103,7 +101,6 @@ class _ProcurementPageState extends State<ProcurementPage> {
                   child: _pageHeader(mobile),
                 ),
 
-                // SCROLLABLE CONTENT
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.fromLTRB(
@@ -130,9 +127,6 @@ class _ProcurementPageState extends State<ProcurementPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // PAGE HEADER
-  // ------------------------------------------------------------
 
   Widget _pageHeader(bool mobile) {
     if (mobile) {
@@ -199,9 +193,6 @@ class _ProcurementPageState extends State<ProcurementPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // SUMMARY CARDS
-  // ------------------------------------------------------------
 
   Widget _summaryCards(bool mobile) {
     final cards = [
@@ -232,7 +223,7 @@ class _ProcurementPageState extends State<ProcurementPage> {
             height: 42,
             width: 42,
             decoration: BoxDecoration(
-              color: AppTheme.lightBlue.withOpacity(0.35),
+              color: AppTheme.lightBlue.withValues(alpha: 0.35),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: AppTheme.primaryBlue, size: 22),
@@ -264,9 +255,6 @@ class _ProcurementPageState extends State<ProcurementPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // PURCHASE ORDERS
-  // ------------------------------------------------------------
 
   Widget _purchaseOrders(bool mobile) {
     final filteredOrders = purchaseOrders.where((order) {
@@ -328,9 +316,6 @@ class _ProcurementPageState extends State<ProcurementPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // FILTERS
-  // ------------------------------------------------------------
 
   Widget _filters(bool mobile) {
     if (mobile) {
@@ -378,7 +363,7 @@ class _ProcurementPageState extends State<ProcurementPage> {
 
   Widget _statusDropdown() {
     return DropdownButtonFormField<String>(
-      value: selectedStatus,
+      initialValue: selectedStatus,
       decoration: InputDecoration(
         filled: true,
         fillColor: const Color(0xFFF8FAFC),
@@ -411,16 +396,13 @@ class _ProcurementPageState extends State<ProcurementPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // DESKTOP TABLE
-  // ------------------------------------------------------------
 
   Widget _desktopTable(List<Map<String, dynamic>> orders) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
         columnSpacing: 28,
-        headingRowColor: MaterialStateProperty.all(const Color(0xFFF8FAFC)),
+        headingRowColor: WidgetStateProperty.all(const Color(0xFFF8FAFC)),
         columns: const [
           DataColumn(label: Text('PO Number')),
           DataColumn(label: Text('Vendor')),
@@ -473,9 +455,6 @@ class _ProcurementPageState extends State<ProcurementPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // MOBILE ORDERS
-  // ------------------------------------------------------------
 
   Widget _mobileOrders(List<Map<String, dynamic>> orders) {
     return Column(
@@ -563,9 +542,6 @@ class _ProcurementPageState extends State<ProcurementPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // STATUS
-  // ------------------------------------------------------------
 
   Widget _statusBadge(String status) {
     Color background;
@@ -609,9 +585,6 @@ class _ProcurementPageState extends State<ProcurementPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // ORDER DETAILS
-  // ------------------------------------------------------------
 
   void _showOrderDetails(Map<String, dynamic> order) {
     showDialog(
@@ -678,9 +651,6 @@ class _ProcurementPageState extends State<ProcurementPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // NEW PURCHASE ORDER
-  // ------------------------------------------------------------
 
   void _showNewOrderDialog() {
     showDialog(
@@ -748,9 +718,6 @@ class _ProcurementPageState extends State<ProcurementPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // EMPTY STATE
-  // ------------------------------------------------------------
 
   Widget _emptyState() {
     return Padding(
@@ -780,9 +747,6 @@ class _ProcurementPageState extends State<ProcurementPage> {
     );
   }
 
-  // ------------------------------------------------------------
-  // HELPERS
-  // ------------------------------------------------------------
 
   String _currency(double amount) {
     return '₹${amount.toStringAsFixed(2)}';

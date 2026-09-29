@@ -18,7 +18,7 @@ class StacklyLogo extends StatelessWidget {
         children: [
           if (showWordmark)
             Image.asset(
-              'assets/images/stackly_logo.png',
+              'assets/images/stackly_logo_transparent.png',
               width: iconSize * 3.37,
               height: iconSize,
               fit: BoxFit.contain,

@@ -77,7 +77,6 @@ class LeadsPage extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Search
             TextField(
               decoration: InputDecoration(
                 hintText: 'Search leads...',
@@ -90,7 +89,6 @@ class LeadsPage extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            // Leads table
             Expanded(
               child: Card(
                 child: SingleChildScrollView(

@@ -1,5 +1,3 @@
-// Add these imports/routes to your EXISTING centralized AppRoutes.
-// Do not add a Finance Dashboard route here because you already have it.
 
 import 'asset_management_page.dart';
 import 'general_ledger_page.dart';

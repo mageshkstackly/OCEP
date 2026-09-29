@@ -17,9 +17,6 @@ class FeaturesPage extends StatelessWidget {
             children: [
               const SizedBox(height: 10),
 
-              // ---------------------------------------------------------
-              // PAGE HEADER
-              // ---------------------------------------------------------
               const Text(
                 'Features',
                 style: TextStyle(
@@ -38,9 +35,6 @@ class FeaturesPage extends StatelessWidget {
 
               const SizedBox(height: 30),
 
-              // ---------------------------------------------------------
-              // FEATURE CARDS
-              // ---------------------------------------------------------
               LayoutBuilder(
                 builder: (context, constraints) {
                   int columns;
@@ -125,9 +119,6 @@ class FeaturesPage extends StatelessWidget {
 
               const SizedBox(height: 35),
 
-              // ---------------------------------------------------------
-              // BOTTOM HIGHLIGHT
-              // ---------------------------------------------------------
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(26),
@@ -217,9 +208,6 @@ class FeaturesPage extends StatelessWidget {
     );
   }
 
-  // ================================================================
-  // FEATURE CARD
-  // ================================================================
 
   static Widget _featureCard({
     required double width,
@@ -247,7 +235,6 @@ class FeaturesPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Icon
             Container(
               width: 46,
               height: 46,
@@ -260,7 +247,6 @@ class FeaturesPage extends StatelessWidget {
 
             const SizedBox(height: 15),
 
-            // Title
             Text(
               title,
               style: const TextStyle(
@@ -272,7 +258,6 @@ class FeaturesPage extends StatelessWidget {
 
             const SizedBox(height: 8),
 
-            // Description
             Text(
               description,
               style: const TextStyle(

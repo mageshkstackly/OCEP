@@ -45,9 +45,6 @@ class EnterpriseModuleDashboard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // ============================================================
-        // FIXED MODULE HEADER
-        // ============================================================
         Container(
           width: double.infinity,
           padding: const EdgeInsets.fromLTRB(24, 18, 24, 18),
@@ -91,18 +88,12 @@ class EnterpriseModuleDashboard extends StatelessWidget {
           ),
         ),
 
-        // ============================================================
-        // SCROLLABLE CONTENT
-        // ============================================================
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ======================================================
-                // KPI CARDS
-                // ======================================================
                 LayoutBuilder(
                   builder: (context, constraints) {
                     int columns = 4;
@@ -133,9 +124,6 @@ class EnterpriseModuleDashboard extends StatelessWidget {
 
                 const SizedBox(height: 28),
 
-                // ======================================================
-                // QUICK ACTIONS
-                // ======================================================
                 Text(
                   'Quick Actions',
                   style: Theme.of(context).textTheme.titleLarge
@@ -178,9 +166,6 @@ class EnterpriseModuleDashboard extends StatelessWidget {
 
                 const SizedBox(height: 28),
 
-                // ======================================================
-                // OVERVIEW
-                // ======================================================
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.all(24),

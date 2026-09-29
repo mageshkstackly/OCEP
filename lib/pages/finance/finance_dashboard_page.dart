@@ -13,9 +13,6 @@ class FinanceDashboardPage extends StatelessWidget {
       subtitle: 'Manage financial operations, accounting and reporting.',
       icon: Icons.account_balance_wallet_outlined,
 
-      // ============================================================
-      // KPIs
-      // ============================================================
       kpis: [
         ModuleKpi(
           title: 'Total Revenue',
@@ -39,9 +36,6 @@ class FinanceDashboardPage extends StatelessWidget {
         ),
       ],
 
-      // ============================================================
-      // QUICK ACTIONS
-      // ============================================================
       quickActions: [
         ModuleQuickAction(
           title: 'General Ledger',

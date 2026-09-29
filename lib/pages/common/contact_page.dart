@@ -58,9 +58,6 @@ class _ContactPageState extends State<ContactPage> {
             children: [
               const SizedBox(height: 10),
 
-              // ========================================================
-              // PAGE HEADER
-              // ========================================================
               const Text(
                 'Contact Us',
                 style: TextStyle(
@@ -79,9 +76,6 @@ class _ContactPageState extends State<ContactPage> {
 
               const SizedBox(height: 30),
 
-              // ========================================================
-              // CONTACT CONTENT
-              // ========================================================
               LayoutBuilder(
                 builder: (context, constraints) {
                   if (constraints.maxWidth < 750) {
@@ -113,9 +107,6 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  // ================================================================
-  // CONTACT INFORMATION
-  // ================================================================
 
   Widget _contactInformation() {
     return Container(
@@ -176,9 +167,6 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  // ================================================================
-  // CONTACT FORM
-  // ================================================================
 
   Widget _contactForm() {
     return Container(
@@ -212,7 +200,6 @@ class _ContactPageState extends State<ContactPage> {
 
             const SizedBox(height: 20),
 
-            // NAME
             TextFormField(
               controller: _nameController,
               decoration: _inputDecoration('Name', Icons.person_outline),
@@ -227,7 +214,6 @@ class _ContactPageState extends State<ContactPage> {
 
             const SizedBox(height: 15),
 
-            // EMAIL
             TextFormField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
@@ -247,7 +233,6 @@ class _ContactPageState extends State<ContactPage> {
 
             const SizedBox(height: 15),
 
-            // SUBJECT
             TextFormField(
               controller: _subjectController,
               decoration: _inputDecoration('Subject', Icons.subject_outlined),
@@ -262,7 +247,6 @@ class _ContactPageState extends State<ContactPage> {
 
             const SizedBox(height: 15),
 
-            // MESSAGE
             TextFormField(
               controller: _messageController,
               maxLines: 5,
@@ -278,7 +262,6 @@ class _ContactPageState extends State<ContactPage> {
 
             const SizedBox(height: 20),
 
-            // SEND BUTTON
             SizedBox(
               width: double.infinity,
               height: 48,
@@ -305,9 +288,6 @@ class _ContactPageState extends State<ContactPage> {
     );
   }
 
-  // ================================================================
-  // INPUT DECORATION
-  // ================================================================
 
   InputDecoration _inputDecoration(String label, IconData icon) {
     return InputDecoration(
@@ -326,9 +306,6 @@ class _ContactPageState extends State<ContactPage> {
   }
 }
 
-// ================================================================
-// CONTACT ITEM
-// ================================================================
 
 class _ContactItem extends StatelessWidget {
   final IconData icon;

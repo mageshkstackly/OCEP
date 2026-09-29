@@ -22,9 +22,6 @@ class HrmsManagementPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // ============================================================
-        // FIXED HEADER
-        // ============================================================
 
         Container(
           width: double.infinity,
@@ -78,18 +75,12 @@ class HrmsManagementPage extends StatelessWidget {
           ),
         ),
 
-        // ============================================================
-        // SCROLLABLE CONTENT
-        // ============================================================
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ======================================================
-                // KPI CARDS
-                // ======================================================
 
                 LayoutBuilder(
                   builder: (context, constraints) {
@@ -118,9 +109,6 @@ class HrmsManagementPage extends StatelessWidget {
 
                 const SizedBox(height: 28),
 
-                // ======================================================
-                // SEARCH + FILTER
-                // ======================================================
                 Row(
                   children: [
                     Expanded(
@@ -145,9 +133,6 @@ class HrmsManagementPage extends StatelessWidget {
 
                 const SizedBox(height: 20),
 
-                // ======================================================
-                // TABLE
-                // ======================================================
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -265,9 +250,6 @@ class HrmsManagementPage extends StatelessWidget {
   }
 }
 
-// ==================================================================
-// KPI MODEL
-// ==================================================================
 
 class HrmsKpi {
   final String title;
@@ -277,9 +259,6 @@ class HrmsKpi {
   const HrmsKpi({required this.title, required this.value, required this.icon});
 }
 
-// ==================================================================
-// KPI CARD
-// ==================================================================
 
 class _KpiCard extends StatelessWidget {
   final double width;

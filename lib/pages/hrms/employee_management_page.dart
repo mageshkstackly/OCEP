@@ -58,9 +58,6 @@ class _EmployeeManagementPageState extends State<EmployeeManagementPage> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // ------------------------------------------------------------
-        // FIXED HEADER
-        // ------------------------------------------------------------
         Container(
           width: double.infinity,
           padding: const EdgeInsets.fromLTRB(24, 18, 24, 18),
@@ -107,18 +104,12 @@ class _EmployeeManagementPageState extends State<EmployeeManagementPage> {
           ),
         ),
 
-        // ------------------------------------------------------------
-        // SCROLLABLE CONTENT
-        // ------------------------------------------------------------
         Expanded(
           child: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // ------------------------------------------------------
-                // KPI CARDS
-                // ------------------------------------------------------
                 LayoutBuilder(
                   builder: (context, constraints) {
                     int columns = 4;
@@ -169,9 +160,6 @@ class _EmployeeManagementPageState extends State<EmployeeManagementPage> {
 
                 const SizedBox(height: 28),
 
-                // ------------------------------------------------------
-                // TOOLBAR
-                // ------------------------------------------------------
                 Row(
                   children: [
                     const Expanded(
@@ -195,9 +183,6 @@ class _EmployeeManagementPageState extends State<EmployeeManagementPage> {
 
                 const SizedBox(height: 16),
 
-                // ------------------------------------------------------
-                // SEARCH
-                // ------------------------------------------------------
                 TextField(
                   controller: searchController,
                   decoration: InputDecoration(
@@ -211,9 +196,6 @@ class _EmployeeManagementPageState extends State<EmployeeManagementPage> {
 
                 const SizedBox(height: 20),
 
-                // ------------------------------------------------------
-                // EMPLOYEE TABLE
-                // ------------------------------------------------------
                 Container(
                   width: double.infinity,
                   decoration: BoxDecoration(
@@ -358,9 +340,6 @@ class _EmployeeManagementPageState extends State<EmployeeManagementPage> {
   }
 }
 
-// ==================================================================
-// KPI CARD
-// ==================================================================
 
 class _KpiCard extends StatelessWidget {
   final double width;
@@ -422,9 +401,6 @@ class _KpiCard extends StatelessWidget {
   }
 }
 
-// ==================================================================
-// STATUS BADGE
-// ==================================================================
 
 class _StatusBadge extends StatelessWidget {
   final String status;

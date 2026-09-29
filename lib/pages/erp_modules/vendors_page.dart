@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
-import '../../widgets/app_layout.dart';
 
 class VendorsPage extends StatefulWidget {
   const VendorsPage({super.key});
@@ -97,7 +96,6 @@ Widget build(BuildContext context) {
           bottom: false,
           child: Column(
             children: [
-              // FIXED HEADER
               Padding(
                 padding: EdgeInsets.fromLTRB(
                   horizontalPadding,
@@ -108,7 +106,6 @@ Widget build(BuildContext context) {
                 child: _pageHeader(mobile),
               ),
 
-              // SCROLLABLE CONTENT
               Expanded(
                 child: SingleChildScrollView(
                   padding: EdgeInsets.fromLTRB(
@@ -135,9 +132,6 @@ Widget build(BuildContext context) {
   );
 }
 
-  // ------------------------------------------------------------
-  // HEADER
-  // ------------------------------------------------------------
 
   Widget _pageHeader(bool mobile) {
     if (mobile) {
@@ -204,9 +198,6 @@ Widget build(BuildContext context) {
     );
   }
 
-  // ------------------------------------------------------------
-  // SUMMARY
-  // ------------------------------------------------------------
 
   Widget _summaryCards(bool mobile) {
     final cards = [
@@ -237,7 +228,7 @@ Widget build(BuildContext context) {
             height: 42,
             width: 42,
             decoration: BoxDecoration(
-              color: AppTheme.lightBlue.withOpacity(0.35),
+              color: AppTheme.lightBlue.withValues(alpha: 0.35),
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: AppTheme.primaryBlue, size: 22),
@@ -269,9 +260,6 @@ Widget build(BuildContext context) {
     );
   }
 
-  // ------------------------------------------------------------
-  // VENDOR DIRECTORY
-  // ------------------------------------------------------------
 
   Widget _vendorDirectory(bool mobile) {
     final filteredVendors = vendors.where((vendor) {
@@ -324,9 +312,6 @@ Widget build(BuildContext context) {
     );
   }
 
-  // ------------------------------------------------------------
-  // SEARCH
-  // ------------------------------------------------------------
 
   Widget _searchField() {
     return TextField(
@@ -356,16 +341,13 @@ Widget build(BuildContext context) {
     );
   }
 
-  // ------------------------------------------------------------
-  // DESKTOP TABLE
-  // ------------------------------------------------------------
 
   Widget _desktopVendorTable(List<Map<String, dynamic>> vendorList) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: DataTable(
         columnSpacing: 28,
-        headingRowColor: MaterialStateProperty.all(const Color(0xFFF8FAFC)),
+        headingRowColor: WidgetStateProperty.all(const Color(0xFFF8FAFC)),
         columns: const [
           DataColumn(label: Text('Vendor')),
           DataColumn(label: Text('Contact')),
@@ -450,9 +432,6 @@ Widget build(BuildContext context) {
     );
   }
 
-  // ------------------------------------------------------------
-  // MOBILE LIST
-  // ------------------------------------------------------------
 
   Widget _mobileVendorList(List<Map<String, dynamic>> vendorList) {
     return Column(
@@ -474,7 +453,7 @@ Widget build(BuildContext context) {
                     height: 40,
                     width: 40,
                     decoration: BoxDecoration(
-                      color: AppTheme.lightBlue.withOpacity(0.35),
+                      color: AppTheme.lightBlue.withValues(alpha: 0.35),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Icon(
@@ -557,9 +536,6 @@ Widget build(BuildContext context) {
     );
   }
 
-  // ------------------------------------------------------------
-  // STATUS
-  // ------------------------------------------------------------
 
   Widget _statusBadge(String status) {
     final active = status == 'Active';
@@ -581,9 +557,6 @@ Widget build(BuildContext context) {
     );
   }
 
-  // ------------------------------------------------------------
-  // VENDOR DETAILS
-  // ------------------------------------------------------------
 
   void _showVendorDetails(Map<String, dynamic> vendor) {
     showDialog(
@@ -652,9 +625,6 @@ Widget build(BuildContext context) {
     );
   }
 
-  // ------------------------------------------------------------
-  // ADD VENDOR
-  // ------------------------------------------------------------
 
   void _showAddVendorDialog() {
     showDialog(
@@ -722,9 +692,6 @@ Widget build(BuildContext context) {
     );
   }
 
-  // ------------------------------------------------------------
-  // EMPTY STATE
-  // ------------------------------------------------------------
 
   Widget _emptyState() {
     return Padding(
@@ -754,9 +721,6 @@ Widget build(BuildContext context) {
     );
   }
 
-  // ------------------------------------------------------------
-  // COMMON DECORATION
-  // ------------------------------------------------------------
 
   BoxDecoration _decoration() {
     return BoxDecoration(

@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 
-/// Holds the presentation state for the email/password + OTP sign-in flow.
-/// A real deployment should replace the local demo OTP with a server request.
 class AuthFlowProvider extends ChangeNotifier {
   bool _otpRequested = false;
   String _verificationCode = '';

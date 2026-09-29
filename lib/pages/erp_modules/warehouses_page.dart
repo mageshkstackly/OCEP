@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
-import '../../widgets/app_layout.dart';
 
 class WarehousesPage extends StatefulWidget {
   const WarehousesPage({super.key});
@@ -111,9 +110,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
             bottom: false,
             child: Column(
               children: [
-                // ============================================================
-                // FIXED WAREHOUSE HEADER
-                // ============================================================
                 Padding(
                   padding: EdgeInsets.fromLTRB(
                     horizontalPadding,
@@ -124,9 +120,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
                   child: _buildHeader(mobile),
                 ),
 
-                // ============================================================
-                // SCROLLABLE CONTENT
-                // ============================================================
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.fromLTRB(
@@ -157,9 +150,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     );
   }
 
-  // ===========================================================================
-  // HEADER
-  // ===========================================================================
 
   Widget _buildHeader(bool mobile) {
     return Column(
@@ -226,9 +216,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     );
   }
 
-  // ===========================================================================
-  // KPI SECTION
-  // ===========================================================================
 
   Widget _buildKpiSection(bool mobile) {
     final List<Map<String, dynamic>> data = [
@@ -312,9 +299,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     );
   }
 
-  // ===========================================================================
-  // CAPACITY SECTION
-  // ===========================================================================
 
   Widget _buildCapacitySection(bool mobile) {
     return Container(
@@ -458,9 +442,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     );
   }
 
-  // ===========================================================================
-  // WAREHOUSE SECTION
-  // ===========================================================================
 
   Widget _buildWarehouseSection(bool mobile) {
     return Container(
@@ -524,9 +505,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     );
   }
 
-  // ===========================================================================
-  // FILTERS
-  // ===========================================================================
 
   Widget _buildFilters(bool mobile) {
     if (mobile) {
@@ -571,7 +549,7 @@ class _WarehousesPageState extends State<WarehousesPage> {
 
   Widget _statusDropdown() {
     return DropdownButtonFormField<String>(
-      value: selectedStatus,
+      initialValue: selectedStatus,
       decoration: InputDecoration(
         filled: true,
         fillColor: const Color(0xFFF8FAFC),
@@ -598,9 +576,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     );
   }
 
-  // ===========================================================================
-  // DESKTOP TABLE
-  // ===========================================================================
 
   Widget _buildDesktopTable() {
     final List<Map<String, dynamic>> data = _filteredWarehouses();
@@ -625,7 +600,7 @@ class _WarehousesPageState extends State<WarehousesPage> {
             dataRowMaxHeight: 78,
             horizontalMargin: 16,
             columnSpacing: 22,
-            headingRowColor: MaterialStateProperty.all(const Color(0xFFF8FAFC)),
+            headingRowColor: WidgetStateProperty.all(const Color(0xFFF8FAFC)),
             columns: const [
               DataColumn(label: Text('WAREHOUSE')),
               DataColumn(label: Text('LOCATION')),
@@ -841,9 +816,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     );
   }
 
-  // ===========================================================================
-  // MOBILE LIST
-  // ===========================================================================
 
   Widget _buildMobileList() {
     final List<Map<String, dynamic>> data = _filteredWarehouses();
@@ -1050,9 +1022,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     );
   }
 
-  // ===========================================================================
-  // STATUS
-  // ===========================================================================
 
   Widget _statusBadge(String status) {
     final bool active = status == 'Active';
@@ -1085,9 +1054,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     );
   }
 
-  // ===========================================================================
-  // FILTERING
-  // ===========================================================================
 
   List<Map<String, dynamic>> _filteredWarehouses() {
     final String query = searchController.text.trim().toLowerCase();
@@ -1107,9 +1073,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     }).toList();
   }
 
-  // ===========================================================================
-  // ADD WAREHOUSE
-  // ===========================================================================
 
   void _showAddWarehouseDialog() {
     final TextEditingController nameController = TextEditingController();
@@ -1219,9 +1182,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     );
   }
 
-  // ===========================================================================
-  // DETAILS
-  // ===========================================================================
 
   void _showWarehouseDetails(Map<String, dynamic> warehouse) {
     showDialog(
@@ -1314,9 +1274,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     );
   }
 
-  // ===========================================================================
-  // EMPTY STATE
-  // ===========================================================================
 
   Widget _emptyState() {
     return Padding(
@@ -1343,9 +1300,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     );
   }
 
-  // ===========================================================================
-  // STYLING
-  // ===========================================================================
 
   BoxDecoration _cardDecoration() {
     return BoxDecoration(
@@ -1354,7 +1308,7 @@ class _WarehousesPageState extends State<WarehousesPage> {
       border: Border.all(color: const Color(0xFFE4E8ED)),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.025),
+          color: Colors.black.withValues(alpha: 0.025),
           blurRadius: 8,
           offset: const Offset(0, 3),
         ),
@@ -1372,9 +1326,6 @@ class _WarehousesPageState extends State<WarehousesPage> {
     );
   }
 
-  // ===========================================================================
-  // FORMATTERS
-  // ===========================================================================
 
   String _formatNumber(int value) {
     return value.toString().replaceAllMapped(

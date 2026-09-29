@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
-import '../../widgets/app_layout.dart';
 
 class StockMovementsPage extends StatefulWidget {
   const StockMovementsPage({super.key});
@@ -168,9 +167,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
             bottom: false,
             child: Column(
               children: [
-                // ============================================================
-                // FIXED STOCK MOVEMENTS HEADER
-                // ============================================================
                 Padding(
                   padding: EdgeInsets.fromLTRB(
                     horizontalPadding,
@@ -181,9 +177,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
                   child: _buildHeader(mobile),
                 ),
 
-                // ============================================================
-                // SCROLLABLE CONTENT
-                // ============================================================
                 Expanded(
                   child: SingleChildScrollView(
                     padding: EdgeInsets.fromLTRB(
@@ -211,9 +204,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
     );
   }
 
-  // ===========================================================================
-  // HEADER
-  // ===========================================================================
 
   Widget _buildHeader(bool mobile) {
     return Column(
@@ -280,9 +270,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
     );
   }
 
-  // ===========================================================================
-  // SUMMARY
-  // ===========================================================================
 
   Widget _buildSummary(bool mobile) {
     final List<Map<String, dynamic>> data = [
@@ -392,9 +379,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
     );
   }
 
-  // ===========================================================================
-  // MOVEMENT SECTION
-  // ===========================================================================
 
   Widget _buildMovementSection(bool mobile) {
     return Container(
@@ -446,9 +430,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
     );
   }
 
-  // ===========================================================================
-  // FILTERS
-  // ===========================================================================
 
   Widget _filters(bool mobile) {
     if (mobile) {
@@ -501,7 +482,7 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
 
   Widget _typeDropdown() {
     return DropdownButtonFormField<String>(
-      value: selectedType,
+      initialValue: selectedType,
       isExpanded: true,
       decoration: _dropdownDecoration(),
       style: const TextStyle(fontSize: 11, color: AppTheme.darkNavy),
@@ -528,7 +509,7 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
 
   Widget _warehouseDropdown() {
     return DropdownButtonFormField<String>(
-      value: selectedWarehouse,
+      initialValue: selectedWarehouse,
       isExpanded: true,
       decoration: _dropdownDecoration(),
       style: const TextStyle(fontSize: 11, color: AppTheme.darkNavy),
@@ -566,9 +547,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
     );
   }
 
-  // ===========================================================================
-  // DESKTOP TABLE
-  // ===========================================================================
 
   Widget _desktopTable() {
     final List<Map<String, dynamic>> data = _filteredMovements();
@@ -593,7 +571,7 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
             dataRowMaxHeight: 76,
             horizontalMargin: 16,
             columnSpacing: 22,
-            headingRowColor: MaterialStateProperty.all(const Color(0xFFF8FAFC)),
+            headingRowColor: WidgetStateProperty.all(const Color(0xFFF8FAFC)),
             columns: const [
               DataColumn(label: Text('MOVEMENT')),
               DataColumn(label: Text('PRODUCT')),
@@ -767,9 +745,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
     );
   }
 
-  // ===========================================================================
-  // MOBILE
-  // ===========================================================================
 
   Widget _mobileMovements() {
     final List<Map<String, dynamic>> data = _filteredMovements();
@@ -937,9 +912,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
     );
   }
 
-  // ===========================================================================
-  // MOVEMENT TYPE
-  // ===========================================================================
 
   Widget _movementTypeBadge(String type) {
     Color background;
@@ -995,9 +967,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
     );
   }
 
-  // ===========================================================================
-  // FILTERING
-  // ===========================================================================
 
   List<Map<String, dynamic>> _filteredMovements() {
     final String query = searchController.text.trim().toLowerCase();
@@ -1022,9 +991,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
     }).toList();
   }
 
-  // ===========================================================================
-  // DETAILS
-  // ===========================================================================
 
   void _showMovementDetails(Map<String, dynamic> movement) {
     showDialog(
@@ -1103,9 +1069,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
     );
   }
 
-  // ===========================================================================
-  // RECORD MOVEMENT
-  // ===========================================================================
 
   void _showMovementDialog() {
     final TextEditingController productController = TextEditingController();
@@ -1139,7 +1102,7 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       DropdownButtonFormField<String>(
-                        value: movementType,
+                        initialValue: movementType,
                         decoration: _dialogDecoration(
                           'Movement Type',
                           Icons.swap_horiz,
@@ -1234,9 +1197,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
     );
   }
 
-  // ===========================================================================
-  // EMPTY STATE
-  // ===========================================================================
 
   Widget _emptyState() {
     return Padding(
@@ -1267,9 +1227,6 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
     );
   }
 
-  // ===========================================================================
-  // STYLES
-  // ===========================================================================
 
   BoxDecoration _cardDecoration() {
     return BoxDecoration(
@@ -1278,7 +1235,7 @@ class _StockMovementsPageState extends State<StockMovementsPage> {
       border: Border.all(color: const Color(0xFFE4E8ED)),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.025),
+          color: Colors.black.withValues(alpha: 0.025),
           blurRadius: 8,
           offset: const Offset(0, 3),
         ),

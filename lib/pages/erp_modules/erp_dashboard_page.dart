@@ -20,9 +20,6 @@ class ErpDashboardPage extends StatelessWidget {
   }
 }
 
-// ============================================================
-// ERP DASHBOARD CONTENT
-// ============================================================
 
 class _ErpDashboardContent extends StatelessWidget {
   final double width;
@@ -45,9 +42,6 @@ class _ErpDashboardContent extends StatelessWidget {
       bottom: false,
       child: Column(
         children: [
-          // ==================================================
-          // FIXED ERP HEADER
-          // ==================================================
 
           Padding(
             padding: EdgeInsets.fromLTRB(
@@ -59,9 +53,6 @@ class _ErpDashboardContent extends StatelessWidget {
             child: _ErpHeader(compact: smallMobile || mobile),
           ),
 
-          // ==================================================
-          // SCROLLABLE DASHBOARD CONTENT
-          // ==================================================
           Expanded(
             child: SingleChildScrollView(
               padding: EdgeInsets.fromLTRB(
@@ -115,9 +106,6 @@ class _ErpDashboardContent extends StatelessWidget {
   }
 }
 
-// ============================================================
-// HEADER
-// ============================================================
 
 class _ErpHeader extends StatelessWidget {
   final bool compact;
@@ -128,7 +116,6 @@ class _ErpHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      // height: compact ? 150 : 120,
       padding: EdgeInsets.all(compact ? 18 : 24),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -191,9 +178,6 @@ class _ErpHeader extends StatelessWidget {
   }
 }
 
-// ============================================================
-// DATE BADGE
-// ============================================================
 
 class _DateBadge extends StatelessWidget {
   const _DateBadge();
@@ -229,9 +213,6 @@ class _DateBadge extends StatelessWidget {
   }
 }
 
-// ============================================================
-// SECTION TITLE
-// ============================================================
 
 class _SectionTitle extends StatelessWidget {
   final String title;
@@ -262,9 +243,6 @@ class _SectionTitle extends StatelessWidget {
   }
 }
 
-// ============================================================
-// KPI SECTION
-// ============================================================
 
 class _KpiSection extends StatelessWidget {
   const _KpiSection();
@@ -365,9 +343,6 @@ class _KpiSection extends StatelessWidget {
   }
 }
 
-// ============================================================
-// KPI CARD
-// ============================================================
 
 class _KpiCard extends StatelessWidget {
   final _KpiData data;
@@ -449,9 +424,6 @@ class _KpiCard extends StatelessWidget {
   }
 }
 
-// ============================================================
-// MAIN CHARTS
-// ============================================================
 
 class _ChartsSection extends StatelessWidget {
   final bool desktop;
@@ -482,9 +454,6 @@ class _ChartsSection extends StatelessWidget {
   }
 }
 
-// ============================================================
-// STOCK MOVEMENT
-// ============================================================
 
 class _StockMovementCard extends StatelessWidget {
   const _StockMovementCard();
@@ -524,9 +493,6 @@ class _StockMovementCard extends StatelessWidget {
   }
 }
 
-// ============================================================
-// INVENTORY HEALTH
-// ============================================================
 
 class _InventoryHealthCard extends StatelessWidget {
   const _InventoryHealthCard();
@@ -582,9 +548,6 @@ class _InventoryHealthCard extends StatelessWidget {
   }
 }
 
-// ============================================================
-// HEALTH ROW
-// ============================================================
 
 class _HealthRow extends StatelessWidget {
   final String title;
@@ -645,9 +608,6 @@ class _HealthRow extends StatelessWidget {
   }
 }
 
-// ============================================================
-// OPERATIONAL SECTION
-// ============================================================
 
 class _OperationalSection extends StatelessWidget {
   final bool desktop;
@@ -673,9 +633,6 @@ class _OperationalSection extends StatelessWidget {
   }
 }
 
-// ============================================================
-// PROCUREMENT
-// ============================================================
 
 class _ProcurementCard extends StatelessWidget {
   const _ProcurementCard();
@@ -716,9 +673,6 @@ class _ProcurementCard extends StatelessWidget {
   }
 }
 
-// ============================================================
-// PROGRESS ROW
-// ============================================================
 
 class _ProgressRow extends StatelessWidget {
   final String title;
@@ -777,9 +731,6 @@ class _ProgressRow extends StatelessWidget {
   }
 }
 
-// ============================================================
-// PO VALUE
-// ============================================================
 
 class _PoValueRow extends StatelessWidget {
   const _PoValueRow();
@@ -817,9 +768,6 @@ class _PoValueRow extends StatelessWidget {
   }
 }
 
-// ============================================================
-// SALES ORDERS
-// ============================================================
 
 class _SalesOrderCard extends StatelessWidget {
   const _SalesOrderCard();
@@ -897,9 +845,6 @@ class _SalesOrderContent extends StatelessWidget {
   }
 }
 
-// ============================================================
-// ORDER LEGEND
-// ============================================================
 
 class _OrderLegendList extends StatelessWidget {
   const _OrderLegendList();
@@ -959,9 +904,6 @@ class _OrderLegend extends StatelessWidget {
   }
 }
 
-// ============================================================
-// ACTIVITY SECTION
-// ============================================================
 
 class _ActivitySection extends StatelessWidget {
   final bool desktop;
@@ -987,9 +929,6 @@ class _ActivitySection extends StatelessWidget {
   }
 }
 
-// ============================================================
-// RECENT ACTIVITY
-// ============================================================
 
 class _RecentActivityCard extends StatelessWidget {
   const _RecentActivityCard();
@@ -1057,9 +996,6 @@ class _RecentActivityCard extends StatelessWidget {
   }
 }
 
-// ============================================================
-// ACTIVITY ITEM
-// ============================================================
 
 class _ActivityItem extends StatelessWidget {
   final IconData icon;
@@ -1131,9 +1067,6 @@ class _ActivityItem extends StatelessWidget {
   }
 }
 
-// ============================================================
-// ATTENTION
-// ============================================================
 
 class _AttentionCard extends StatelessWidget {
   const _AttentionCard();
@@ -1182,9 +1115,6 @@ class _AttentionCard extends StatelessWidget {
   }
 }
 
-// ============================================================
-// ATTENTION ITEM
-// ============================================================
 
 class _AttentionItem extends StatelessWidget {
   final IconData icon;
@@ -1262,9 +1192,6 @@ class _AttentionItem extends StatelessWidget {
   }
 }
 
-// ============================================================
-// QUICK ACTIONS
-// ============================================================
 
 class _QuickActionsSection extends StatelessWidget {
   const _QuickActionsSection();
@@ -1367,9 +1294,6 @@ class _QuickActionsSection extends StatelessWidget {
   }
 }
 
-// ============================================================
-// QUICK ACTION CARD
-// ============================================================
 
 class _QuickActionCard extends StatelessWidget {
   final _QuickAction action;
@@ -1439,9 +1363,6 @@ class _QuickActionCard extends StatelessWidget {
   }
 }
 
-// ============================================================
-// COMMON PANEL
-// ============================================================
 
 class _Panel extends StatelessWidget {
   final String title;
@@ -1517,9 +1438,6 @@ class _Panel extends StatelessWidget {
   }
 }
 
-// ============================================================
-// SMALL BADGE
-// ============================================================
 
 class _SmallBadge extends StatelessWidget {
   final String text;
@@ -1546,9 +1464,6 @@ class _SmallBadge extends StatelessWidget {
   }
 }
 
-// ============================================================
-// LEGEND
-// ============================================================
 
 class _LegendItem extends StatelessWidget {
   final String text;
@@ -1583,9 +1498,6 @@ class _LegendItem extends StatelessWidget {
   }
 }
 
-// ============================================================
-// BAR CHART
-// ============================================================
 
 class _BarChartPainter extends CustomPainter {
   final List<double> values;
@@ -1699,9 +1611,6 @@ class _BarChartPainter extends CustomPainter {
   }
 }
 
-// ============================================================
-// PIE / DONUT CHART
-// ============================================================
 
 class _PieChartPainter extends CustomPainter {
   final List<double> values;
@@ -1768,14 +1677,12 @@ class _PieChartPainter extends CustomPainter {
       startAngle += sweep;
     }
 
-    // Donut center
     final Paint centerPaint = Paint()
       ..color = Colors.white
       ..style = PaintingStyle.fill;
 
     canvas.drawCircle(center, radius * 0.55, centerPaint);
 
-    // Center value
     final TextPainter valuePainter = TextPainter(
       text: TextSpan(
         text: centerValue,
@@ -1795,7 +1702,6 @@ class _PieChartPainter extends CustomPainter {
       Offset(center.dx - valuePainter.width / 2, center.dy - 13),
     );
 
-    // Center label
     final TextPainter labelPainter = TextPainter(
       text: TextSpan(
         text: centerLabel,
@@ -1825,9 +1731,6 @@ class _PieChartPainter extends CustomPainter {
   }
 }
 
-// ============================================================
-// MODELS
-// ============================================================
 
 class _KpiData {
   final String title;

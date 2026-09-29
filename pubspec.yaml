@@ -66,6 +66,8 @@ flutter:
     # - assets/images/background.png
     - assets/images/onecloud_logo.png
     - assets/images/stackly_logo.png
+    - assets/images/stackly_logo_transparent.png
+    - assets/images/industry_auth_backdrop.jpg
     # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
